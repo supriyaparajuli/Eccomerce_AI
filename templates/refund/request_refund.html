@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!-- page-banner-area-start -->
+    <div class="page-banner-area page-banner-height-2"
+         data-background="{% static 'assets/img/banner/page-banner-4.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page-banner-content text-center">
+                        <h4 class="breadcrumb-title">Refund Form</h4>
+                        <div class="breadcrumb-two">
+                            <nav>
+                                <nav class="breadcrumb-trail breadcrumbs">
+                                    <ul class="breadcrumb-menu">
+                                        <li class="breadcrumb-trail">
+                                            <a href="{% url 'home' %}"><span>Home</span></a>
+                                        </li>
+                                        <li class="trail-item">
+                                            <span>Refund Form</span>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page-banner-area-end -->
+<div class="container py-5">
+        <div class="col-md-8 offset-2">
+            {% if messages %}
+                            {% for message in messages %}
+                            {% if message.tags == 'error' %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{message}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label ="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                            </div>
+                            {% else %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{message}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label ="Close">
+                                <span aria-hidden="true">&#10004;</span>
+                            </button>
+
+                            </div>
+
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+
+
+
+        <h1 class="mb-5">Request Refund</h1>
+
+
+
+        <div class="card mb-4" id="forms">
+          <div class="card-header">
+            <small>
+            Type your order reference code to request to get refund from admin
+            </small>
+          </div>
+          <div class="card-body">
+
+                  <form enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+     <br>   <button type='submit' class='btn btn-primary'>Submit</button>
+    </form>
+
+
+
+          </div>
+        </div>
+
+        </div>
+      </div>
+
+
+{% endblock %}
+
+

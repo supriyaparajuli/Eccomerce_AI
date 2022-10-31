@@ -1,0 +1,395 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% block script %}
+<script>
+
+		// Create a Stripe client.
+		var stripe = Stripe('pk_test_51Lhx5XHYuFGYD1XqPSvOTcEDqcNWrCp9n48jJtHMmUVnQXgXH5hMSKQfeMy0TebxiF65wwbHPD3UETqB0kgeWAvZ000xQjPXCH');
+
+		// Create an instance of Elements.
+		var elements = stripe.elements();
+
+		// Custom styling can be passed to options when creating an Element.
+		// (Note that this demo uses a wider set of styles than the guide below.)
+		var style = {
+		  base: {
+		    color: '#32325d',
+		    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+		    fontSmoothing: 'antialiased',
+		    fontSize: '16px',
+		    '::placeholder': {
+		      color: '#aab7c4'
+		    }
+		  },
+		  invalid: {
+		    color: '#fa755a',
+		    iconColor: '#fa755a'
+		  }
+		};
+
+		// Create an instance of the card Element.
+		var card = elements.create('card', {style: style});
+
+		// Add an instance of the card Element into the `card-element` <div>.
+		card.mount('#card-element');
+
+		// Handle real-time validation errors from the card Element.
+		card.addEventListener('change', function(event) {
+		  var displayError = document.getElementById('card-errors');
+		  if (event.error) {
+		    displayError.textContent = event.error.message;
+		  } else {
+		    displayError.textContent = '';
+		  }
+		});
+
+		// Handle form submission.
+		var form = document.getElementById('payment-form');
+		form.addEventListener('submit', function(event) {
+		  event.preventDefault();
+
+		  stripe.createToken(card).then(function(result) {
+		    if (result.error) {
+		      // Inform the user if there was an error.
+		      var errorElement = document.getElementById('card-errors');
+		      errorElement.textContent = result.error.message;
+		    } else {
+		      // Send the token to your server.
+		      stripeTokenHandler(result.token);
+		    }
+		  });
+		});
+
+		// Submit the form with the token ID.
+		function stripeTokenHandler(token) {
+		  // Insert the token ID into the form so it gets submitted to the server
+		  var form = document.getElementById('payment-form');
+		  var hiddenInput = document.createElement('input');
+		  hiddenInput.setAttribute('type', 'hidden');
+		  hiddenInput.setAttribute('name', 'stripeToken');
+		  hiddenInput.setAttribute('value', token.id);
+		  form.appendChild(hiddenInput);
+
+		  // Submit the form
+		  form.submit();
+		}
+
+
+
+</script>
+
+<style type="text/css">
+		/**
+		 * The CSS shown here will not be introduced in the Quickstart guide, but shows
+		 * how you can use CSS to style your Element's container.
+		 */
+		.StripeElement {
+		  box-sizing: border-box;
+
+		  height: 40px;
+
+		  padding: 10px 12px;
+
+		  border: 1px solid transparent;
+		  border-radius: 4px;
+		  background-color: white;
+
+		  box-shadow: 0 1px 3px 0 #e6ebf1;
+		  -webkit-transition: box-shadow 150ms ease;
+		  transition: box-shadow 150ms ease;
+		}
+
+		.StripeElement--focus {
+		  box-shadow: 0 1px 3px 0 #cfd7df;
+		}
+
+		.StripeElement--invalid {
+		  border-color: #fa755a;
+		}
+
+		.StripeElement--webkit-autofill {
+		  background-color: #fefde5 !important;
+		}
+
+</style>
+
+
+<script src="https://js.stripe.com/v3/"></script>
+
+{% endblock %}
+
+
+<main>
+    <!-- page-banner-area-start -->
+    <div class="page-banner-area page-banner-height-2"
+         data-background="{% static 'assets/img/banner/page-banner-4.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page-banner-content text-center">
+                        <h4 class="breadcrumb-title">Checkout</h4>
+                        <div class="breadcrumb-two">
+                            <nav>
+                                <nav class="breadcrumb-trail breadcrumbs">
+                                    <ul class="breadcrumb-menu">
+                                        <li class="breadcrumb-trail">
+                                            <a href="{% url 'home' %}"><span>Home</span></a>
+                                        </li>
+                                        <li class="trail-item">
+                                            <span>Checkout</span>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page-banner-area-end -->
+
+    <!-- coupon-area-start -->
+    <section class="coupon-area pt-20 pb-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="coupon-accordion">
+                        <!-- ACCORDION START -->
+                        <h3>Click Here Coupon Available <span id="showcoupon"> Type "ANKIT" to get 20% off</span></h3>
+                        <div id="checkout_coupon" class="coupon-checkout-content">
+                            <div class="coupon-info">
+                                <form method="get">
+                                    <div class="coupon">
+                                        {% if valid_coupon %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <strong>{{coupon.code}}</strong> {{valid_coupon}}
+                                            <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        {% elif invalid_coupon %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            {{invalid_coupon}}
+                                            <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+
+                                        {% endif %}
+
+                                        <input id="coupon_code" class="input-text" name="coupon_code"
+                                               placeholder="Coupon code" type="text">
+                                        <hr>
+                                        <button class="tp-btn-h1" type="submit">Apply
+                                            coupon
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                        <!-- ACCORDION END -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- coupon-area-end -->
+
+    <!-- checkout-area-start -->
+    <section class="checkout-area pb-85">
+        <div class="container">
+            <form action="{% url 'charge' %}" method="POST" id="payment-form">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <img style="width:100%; height:100%;" src="{% static 'assets/img/about/checkout.jpg' %}"
+                             alt="Italian Trulli">
+
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="your-order mb-30 card border-0 rounded-0 p-lg-4" style="background-color:#E9ECEF">
+                            <div class="jumbotron">
+                                <h3>Your order billing details</h3>
+                                <div class="your-order-table table-responsive">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th class="product-name"><strong class="text-dark">Product</strong></th>
+                                            <th class="product-total"><strong class="text-dark">Total</strong></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="cart_subtotal">
+                                            <td class="product-name"><strong class="text-dark">
+                                                Subtotal Amount</strong>
+                                            </td>
+                                            <td class="product-total">
+                                                <span class="text-dark"><strong>Rs. {{amount}}</strong></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr class="cart-subtotal">
+                                            <th><strong class="text-dark">Tax</strong></th>
+                                            <td><span class="text-dark"><strong>Rs. {{tax}}</strong></span></td>
+                                        </tr>
+                                        <tr class="shipping">
+                                            <th><strong class="text-dark">Shipping amount</strong></th>
+                                            <td>
+
+
+                                                <span class="text-dark"><strong>Rs. {{shipping_amount}}</strong></span>
+
+
+                                            </td>
+                                        </tr>
+                                        <tr class="cart-subtotal">
+                                            {% if valid_coupon %}
+                                            <th><strong class="text-dark">Coupon Applied</strong></th>
+                                            <td>
+                                                <span class="text-dark"><strong>{{coupon.discount}}%</strong></span>
+
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr class="cart-subtotal">
+                                            <th><strong class="text-dark">Order Total</strong></th>
+                                            <td><strong><span
+                                                    class="text-dark">Rs. {{total_amount}}</span>
+                                            </strong>
+                                            </td>
+                                        </tr>
+                                        {% if addresses %}
+                                        {% for address in addresses %}
+
+                                        <tr class="cart-subtotal">
+                                            <th><input type="radio" name="address" value="{{address.id}}" required>
+                                                <strong class="text-dark">Address {{forloop.counter}}</strong></th>
+                                            <td><strong class="text-dark">
+                                                ( {{address.locality}}, {{address.city}}, {{address.state}} )
+                                            </strong>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        {% endif %}
+
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                                <div class="payment-method">
+                                    <div class="accordion" id="checkoutAccordion">
+                                        <img src="{% static 'assets/img/payment/payment.png' %}">
+
+                                        {% if user.is_authenticated %}
+
+                                        <input type="hidden" value="{{total_amount}}" name="total_amount"
+                                               id="total_amount">
+                                        <input type="hidden" value="{{user.email}}" name="email" id="email">
+                                        <input type="hidden" value="{{user.get_username}}" name="username"
+                                               id="username">
+                                        {% endif %}
+
+                                        <div class="form-row">
+                                            <label for="card-element">
+                                                Credit or debit card
+                                            </label>
+                                            <div id="card-element">
+                                                <!-- A stripe element will be inserted here. -->
+
+                                            </div>
+                                            <!-- used to display from erros -->
+                                            <div id="card-errors" role="alert"></div>
+                                        </div>
+                                        <hr>
+                                        {% if addresses %}
+                                        {% if amount > 500 %}
+
+                                        <button type="submit"
+                                                class="cart-btn product-modal-sidebar-open-btn d-flex align-items-center justify-content-center w-100">
+                                            Purchase item and Order now
+                                        </button>
+                                        {% else %}
+                                            <p><strong class="text-dark">You need to order items above minimum Rs. 500</strong></p>
+                                            <a class="btn btn-outline-danger btn-lg" href="{% url 'product' %}" role="button">Browse Products »</a>
+                                        {% endif %}
+
+                                                                                    {% else %}
+                                        <p><strong class="text-dark">You need to add address to purchase</strong></p>
+
+                                                <a class="btn btn-outline-danger btn-lg" href="{% url 'profile_detail' %}" role="button">Add
+                                            Addresses »</a>
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- checkout-area-end -->
+
+    <!-- cta-area-start -->
+    <section class="cta-area d-ldark-bg pt-55 pb-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="cta-item cta-item-d mb-30">
+                        <h5 class="cta-title">Follow Us</h5>
+                        <p>We make consolidating, marketing and tracking your social media website easy.</p>
+                        <div class="cta-social">
+                            <div class="social-icon">
+                                <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="youtube"><i class="fab fa-youtube"></i></a>
+                                <a href="#" class="linkedin"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="rss"><i class="fas fa-rss"></i></a>
+                                <a href="#" class="dribbble"><i class="fab fa-dribbble"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="cta-item mb-30">
+                        <h5 class="cta-title">Sign Up To Newsletter</h5>
+                        <p>Join 60.000+ subscribers and get a new discount coupon on every Saturday.</p>
+                        <div class="subscribe__form">
+                            <form action="#">
+                                <input type="email" placeholder="Enter your email here...">
+                                <button>subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="cta-item mb-30">
+                        <h5 class="cta-title">Download App</h5>
+                        <p>DukaMarket App is now available on App Store & Google Play. Get it now.</p>
+                        <div class="cta-apps">
+                            <div class="apps-store">
+                                <a href="#"><img src="{% static 'assets/img/brand/app_ios.png' %}" alt=""></a>
+                                <a href="#"><img src="{% static 'assets/img/brand/app_android.png' %}" alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- cta-area-end -->
+
+</main>
+
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- page-banner-area-start -->
+    <div class="page-banner-area page-banner-height-2"
+         data-background="{% static 'assets/img/banner/page-banner-4.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page-banner-content text-center">
+                        <h4 class="breadcrumb-title">Searches</h4>
+                        <div class="breadcrumb-two">
+                            <nav>
+                                <nav class="breadcrumb-trail breadcrumbs">
+                                    <ul class="breadcrumb-menu">
+                                        <li class="breadcrumb-trail">
+                                            <a href="{% url 'home' %}"><span>Home</span></a>
+                                        </li>
+                                        <li class="trail-item">
+                                            <span>Searches</span>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page-banner-area-end -->
+
+
+        <!-- trending-product-area-start -->
+        <section class="trending-product-area light-bg-s pt-25 pb-15">
+            <div class="container custom-conatiner">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="section__head d-flex justify-content-between mb-30">
+                            <div class="section__title section__title-2">
+                                <h5 class="st-titile">Hot Trending Products</h5>
+                            </div>
+                            <div class="button-wrap button-wrap-2">
+                                <a href="#">See All Product <i class="fal fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for i in items %}
+                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-2">
+                        <div class="product__item product__item-2 b-radius-2 mb-20" style="height: 430px;">
+                            <div class="product__thumb fix">
+                                <div class="product-image w-img">
+                                    <a href="{{i.get_absolute_url}}">
+                                        <img src="{{i.featured_image}}" alt="product">
+                                    </a>
+                                </div>
+                                <div class="product__offer">
+                                <span class="discount">-10%</span>
+                                </div>
+                                <div class="product-action product-action-2">
+                                    <a href="#" class="icon-box icon-box-1" data-bs-toggle="modal" data-bs-target="#productModalId">
+                                        <i class="fa fa-thumbs-o-up"></i>
+                                        <i class="fa fa-thumbs-o-up"></i>
+                                    </a>
+                                    <a href="#" class="icon-box icon-box-1">
+                                        <i class="fal fa-heart"></i>
+                                        <i class="fal fa-heart"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div class="product__content product__content-2">
+                                <h6><a href="{{i.get_absolute_url}}">{{i.product_name}}</a></h6>
+
+
+                                                                        	<div class="rating-star">
+		<span>
+			<i class="fa fa-star{% if i.averageReview < 0.5 %}-o{% elif i.averageReview >= 0.5 and i.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+			<i class="fa fa-star{% if i.averageReview < 1.5 %}-o{% elif i.averageReview >= 1.5 and i.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+			<i class="fa fa-star{% if i.averageReview < 2.5 %}-o{% elif i.averageReview >= 2.5 and i.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+			<i class="fa fa-star{% if i.averageReview < 3.5 %}-o{% elif i.averageReview >= 3.5 and i.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+			<i class="fa fa-star{% if i.averageReview < 4.5 %}-o{% elif i.averageReview >= 4.5 and i.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+			</span>
+                                                              <span>&nbsp;&nbsp;({{i.countReview}} review)</span>
+
+	</div>
+                                <div class="price">
+                                    <span>Rs. {{i.price}}</span>
+                                </div>
+                            </div>
+                            <div class="product__add-cart text-center">
+                                    <form action="{% url 'add-to-cart' %}">
+                                    <input type="hidden" name="prod_id" value="{{i.id}}" id="product_id">
+                                <button type="submit" class="cart-btn-3 product-modal-sidebar-open-btn d-flex align-items-center justify-content-center w-100">
+                                Add to Cart
+                                </button>
+                                    </form>
+                            </div>
+                        </div>
+                    </div>
+                        {% endfor %}
+                </div>
+            </div>
+        </section>
+        <!-- trending-product-area-end -->
+
+
+
+    {% endblock %}
