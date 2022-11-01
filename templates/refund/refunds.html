@@ -40,22 +40,23 @@
                     <div class="col-12">
                         <form action="#">
                             <div class="table-content table-responsive">
+                                <h3>An email with receipt will be provided shortly if refund is granted</h3>
                                 <table class="table">
                                     <thead>
                                         <tr>
                                             <th class="product-thumbnail">Images</th>
                                             <th class="cart-product-name">Product</th>
-                                            <th class="product-price">Price Refunded</th>
-                                            <th class="product-quantity">Refund Requested</th>
-                                            <th class="product-subtotal">Refund Accepted</th>
+                                            <th class="product-price">Amount Request</th>
+                                            <th class="product-quantity">In Progress</th>
+                                            <th class="product-subtotal">Refund Granted</th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
                                     {% for order in orders %}
                                         <tr>
-                                            <td class="product-thumbnail"><a href="shop-details.html"><img src="{{order.product.featured_image}}" alt=""></a></td>
-                                            <td class="product-name"><a href="shop-details.html">{{order.product.product_name}}</a></td>
+                                            <td class="product-thumbnail"><a href="#"><img src="{{order.product.featured_image}}" alt=""></a></td>
+                                            <td class="product-name"><a href="#">{{order.product.product_name}}</a></td>
                                             <td class="product-price"><span class="amount">Rs. {{order.product.price}}</span></td>
                                             <td class="product-quantity">
                                                 {% if order.refund_requested == True %}
