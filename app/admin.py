@@ -1,9 +1,32 @@
 from django.contrib import admin
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+
+from E_Commerce import settings
 from .models import *
 
 
 def make_refund_accepted(modeladmin, request, queryset):
-    queryset.update(refund_granted=True)
+    sum = 0
+    refunds = Order.objects.filter(user=request.user, refund_requested=True, refund_granted=False)
+
+    if refunds:
+        for refund in refunds:
+            sum = refund.product.price + sum
+
+        template = render_to_string('refund/email.html',
+                                    {'name': request.user.username, 'sum': sum, 'refunds': refunds})
+        email = EmailMessage(
+            'Your Money has been refunded !',
+            template,
+            settings.EMAIL_HOST_USER,
+            [request.user.email]
+        )
+
+        email.fail_silently = False
+        email.send()
+    print("SUM=" + str(sum))
+    queryset.update(refund_granted=True, refund_requested=False)
 
 
 make_refund_accepted.short_description = 'Update orders to refund granted'
@@ -24,7 +47,8 @@ class Product_Admin(admin.ModelAdmin):
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'product', 'quantity', 'status', 'ordered_date', 'refund_requested', 'refund_granted',)
+    list_display = (
+        'id', 'user', 'product', 'quantity', 'price', 'status', 'ordered_date', 'refund_requested', 'refund_granted',)
     list_editable = ('quantity', 'status')
     list_filter = ('status', 'ordered_date', 'refund_requested', 'refund_granted',)
     list_per_page = 20
@@ -65,4 +89,3 @@ admin.site.register(Author)
 admin.site.register(BlogCategory)
 admin.site.register(Post)
 admin.site.register(Signup)
-

@@ -223,6 +223,7 @@ class Order(models.Model):
     ordered_date = models.DateTimeField(auto_now_add=True, verbose_name="Ordered Date", null=True)
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
+    price = models.IntegerField()
     unit_total_price = models.IntegerField()
     status = models.CharField(
         choices=STATUS_CHOICES,

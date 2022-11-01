@@ -60,7 +60,10 @@
                                             <td class="product-quantity">
                                                 {% if order.refund_requested == True %}
                                                <button type="button" class="btn btn-success">&#10004;</button>
+                                                {% else %}
+                                               <button type="button" class="btn btn-danger">&#10008;</button>
                                                 {% endif %}
+
                                             </td>
                                             <td class="product-quantity">
                                                 {% if order.refund_granted == True %}

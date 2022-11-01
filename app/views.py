@@ -370,7 +370,7 @@ def charge(request):
             )
             charge = stripe.Charge.create(customer=customer,
                                           amount=amount * 100,
-                                          currency='inr',
+                                          currency='npr',
                                           description="Payment",
                                           )
         except (stripe.error.RateLimitError, stripe.error.StripeError,
@@ -386,7 +386,7 @@ def charge(request):
     cart = Cart.objects.filter(user=user)
     for c in cart:
         # Saving all the products from Cart to Order
-        Order(user=user, address=address, product=c.product, unit_total_price=c.unit_total_price,
+        Order(user=user, address=address, product=c.product,price=c.product.price ,unit_total_price=c.unit_total_price,
               ref_code=create_ref_code(), quantity=c.quantity).save()
         # And Deleting from Cart
         c.delete()
@@ -667,10 +667,10 @@ class RequestRefundView(View):
 
 @login_required
 def refunds(request):
-    refunds = Order.objects.filter(user=request.user, refund_requested=True)
+    refunds = Order.objects.filter(Q(user=request.user) & (Q(refund_requested=True) & Q(refund_granted=False)) | (
+                Q(refund_requested=False) & Q(refund_granted=True)))
     maincategory = MainCategory.objects.all().order_by('-id')
 
-    print(refunds)
     context = {
         'orders': refunds,
         'maincategory': maincategory,
