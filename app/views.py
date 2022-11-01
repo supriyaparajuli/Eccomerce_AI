@@ -654,7 +654,7 @@ class RequestRefundView(View):
                 refund.Image = image
                 refund.save()
 
-                messages.success(request, "Your request was received.")
+                messages.success(request, "Your request was received. You will shortly receive an email if refund is successfully granted.")
                 return redirect("request-refund")
 
             except ObjectDoesNotExist:

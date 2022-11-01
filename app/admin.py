@@ -7,25 +7,6 @@ from .models import *
 
 
 def make_refund_accepted(modeladmin, request, queryset):
-    sum = 0
-    refunds = Order.objects.filter(user=request.user, refund_requested=True, refund_granted=False)
-
-    if refunds:
-        for refund in refunds:
-            sum = refund.product.price + sum
-
-        template = render_to_string('refund/email.html',
-                                    {'name': request.user.username, 'sum': sum, 'refunds': refunds})
-        email = EmailMessage(
-            'Your Money has been refunded !',
-            template,
-            settings.EMAIL_HOST_USER,
-            [request.user.email]
-        )
-
-        email.fail_silently = False
-        email.send()
-    print("SUM=" + str(sum))
     queryset.update(refund_granted=True, refund_requested=False)
 
 
@@ -49,7 +30,7 @@ class Product_Admin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'user', 'product', 'quantity', 'price', 'status', 'ordered_date', 'refund_requested', 'refund_granted',)
-    list_editable = ('quantity', 'status')
+    list_editable = ('status',)
     list_filter = ('status', 'ordered_date', 'refund_requested', 'refund_granted',)
     list_per_page = 20
     search_fields = ('user', 'product')
