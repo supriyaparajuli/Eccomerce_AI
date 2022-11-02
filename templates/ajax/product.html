@@ -1,0 +1,59 @@
+{% for i in product %}
+<div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 product-box">
+    <div class="product__item product__item-d">
+        <div class="product__thumb fix">
+            <div class="product-image w-img">
+                <a href="{{i.get_absolute_url}}">
+                    <img src="{{i.featured_image}}" alt="product" height="200px;">
+                </a>
+            </div>
+            <div class="product-action">
+                <a href="#" class="icon-box icon-box-1" data-bs-toggle="modal"
+                   data-bs-target="#productModalId">
+                    <i class="fal fa-eye"></i>
+                    <i class="fal fa-eye"></i>
+                </a>
+                <a class="icon-box icon-box-1" role="button">
+                    <i class="fal fa-heart"></i>
+                    <i class="fal fa-heart"></i>
+                </a>
+            </div>
+
+        </div>
+        <div class="product__content-3">
+            <h6>
+                <a href="{{i.get_absolute_url}}">{{i.product_name|truncatewords:8}}</a>
+            </h6>
+            <div class="rating-star">
+		    <span>
+			<i class="fa fa-star{% if i.averageReview < 0.5 %}-o{% elif i.averageReview >= 0.5 and i.averageReview < 1 %}-half-o {% endif %}"
+               aria-hidden="true"></i>
+			<i class="fa fa-star{% if i.averageReview < 1.5 %}-o{% elif i.averageReview >= 1.5 and i.averageReview < 2 %}-half-o {% endif %}"
+               aria-hidden="true"></i>
+			<i class="fa fa-star{% if i.averageReview < 2.5 %}-o{% elif i.averageReview >= 2.5 and i.averageReview < 3 %}-half-o {% endif %}"
+               aria-hidden="true"></i>
+			<i class="fa fa-star{% if i.averageReview < 3.5 %}-o{% elif i.averageReview >= 3.5 and i.averageReview < 4 %}-half-o {% endif %}"
+               aria-hidden="true"></i>
+			<i class="fa fa-star{% if i.averageReview < 4.5 %}-o{% elif i.averageReview >= 4.5 and i.averageReview < 5 %}-half-o {% endif %}"
+               aria-hidden="true"></i>
+			</span>
+
+            </div>
+
+            <div class="price mb-10">
+                <span>रू {{i.price}}</span>
+            </div>
+        </div>
+        <div class="product__add-cart-s text-center">
+            <form action="{% url 'add-to-cart' %}">
+                <input type="hidden" name="prod_id" value="{{i.id}}"
+                       id="product_id">
+                <button type="submit"
+                        class="cart-btn product-modal-sidebar-open-btn d-flex align-items-center justify-content-center w-100">
+                    Add to Cart
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}

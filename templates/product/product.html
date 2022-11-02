@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% block script %}
+
+<script type="text/javascript" src="{% static 'product-filter.js' %}"></script>
+<script type="text/javascript" src="{% static 'custom.js' %}"></script>
+<style>
+       input[type=range]{
+   -webkit-appearance: none;
+   width:100%;
+   }
+   input[type=range]::-webkit-slider-runnable-track {
+   width: 1000px;
+   height: 5px;
+   background: #FCBE00;
+   border: none;
+   border-radius: 3px;
+   }
+   input[type=range]::-webkit-slider-thumb {
+   -webkit-appearance: none;
+   border: none;
+   height: 16px;
+   width: 16px;
+   border-radius: 50%;
+   background: goldenrod;
+   margin-top: -5px;
+   }
+   input[type=range]:focus {
+   outline: none;
+   }
+   input[type=range]:focus::-webkit-slider-runnable-track {
+   background: #FCBE00;
+   }
+
+
+
+
+</style>
+
+{% endblock %}
+
+<main>
+    <!-- breadcrumb__area-start -->
+    <section class="breadcrumb__area box-plr-75">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-12">
+                    <div class="breadcrumb__wrapper">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home /</a><span class="text-dark"> Shop</span></li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb__area-end -->
+
+    <!-- shop-area-start -->
+    <div class="shop-area mb-20">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-4">
+                    <div class="product-widget mb-30">
+                        <h5 class="pt-title">Product categories</h5>
+                        <div class="widget-category-list mt-20">
+                            <form action="#">
+                                {% for i in category %}
+                                <div class="single-widget-category">
+                                    <input type="checkbox" data-filter="category" id="{{i.id}}" value="{{i.id}}"
+                                           class="filter-checkbox">
+                                    <label for="{{i.id}}">{{i.name}} <span>({{i.product_set.all.count}})</span></label>
+                                </div>
+                                {% endfor %}
+                            </form>
+                        </div>
+                    </div>
+                    <div class="product-widget mb-30">
+                        <h5 class="pt-title">Filter By Price</h5>
+                        <div class="price__slider mt-30">
+                            <input type="range" class="multi-range success" style="color:red;" value="{{FilterPrice}}"
+                                   min="{{min_price.price__min}}" max="{{max_price.price__max}}" id="rangeInput"
+                                   oninput="maxPrice.value=this.value" width="400px;"/>
+                            <div>
+                                <form action="" class="s-form mt-20" method="get">
+                                    <b>₹</b><input type="number" id="maxPrice" readonly="" name="FilterPrice"
+                                                   onkeyup="rangeInput.value=this.value"
+                                                   value={{FilterPrice}}{{minMaxPrice.price__min}}>
+                                    <button type="submit" id="priceFilterBtn" class="tp-btn-square-lg">Filter</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-widget mb-30">
+                        <h5 class="pt-title">Choose Color</h5>
+                        <div class="product__color mt-20">
+                            <ul>
+                                {% for i in color %}
+                                <li>
+                                    <a class="black" style="background-color:{{i.code}}">
+                                        <input style="opacity:0" class="filter-checkbox largerCheckbox"
+                                               data-filter="color" value="{{i.id}}" type="checkbox">
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="product-widget mb-30">
+                        <h5 class="pt-title">Choose Brand</h5>
+                        <div class="widget-category-list mt-20">
+                            <form action="#">
+                                {% for i in brand %}
+                                <div class="single-widget-category">
+                                    <input type="checkbox" data-filter="brand" id="brand-{{i.id}}" value="{{i.id}}"
+                                           class="filter-checkbox">
+                                    <label for="brand-{{i.id}}">{{i.name}}
+                                        <span>({{i.product_set.all.count}})</span></label>
+                                </div>
+                                {% endfor %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-8">
+                    <div class="shop-banner mb-30">
+                        <div class="banner-image">
+                            <img class="banner-l" src="{% static 'assets/img/banner/sl-banner.jpg' %}" alt="">
+                            <img class="banner-sm" src="{% static 'assets/img/banner/sl-banner-sm.png' %}" alt="">
+                            <div class="banner-content text-center">
+                                <p class="banner-text mb-30">Hurry Up! <br> Free Shipping All Order Over $99</p>
+                                <a href="{% url 'home' %}" class="st-btn-d b-radius">Discover now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-lists-top">
+                        <div class="product__filter-wrap">
+                            <div class="row align-items-center">
+                                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6">
+                                    <div class="product__filter d-sm-flex align-items-center">
+                                        <div class="product__col">
+                                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link active" id="FourCol-tab"
+                                                            data-bs-toggle="tab" data-bs-target="#FourCol" type="button"
+                                                            role="tab" aria-controls="FourCol" aria-selected="true">
+                                                        <i class="fal fa-th"></i>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__result pl-60">
+                                            <p> Showing Products </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="productGridTabContent">
+                        <div class="tab-pane fade  show active" id="FourCol" role="tabpanel"
+                             aria-labelledby="FourCol-tab">
+                            <div class="tp-wrapper">
+                                <div class="row g-0" id="filteredProducts">
+                                    <p class="ajaxLoader">Loading...</p>
+                                    {% for i in product %}
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 product-box">
+                                        <div class="product__item product__item-d">
+                                            <div class="product__thumb fix">
+                                                <div class="product-image w-img">
+                                                    <a href="{{i.get_absolute_url}}">
+                                                        <img src="{{i.featured_image}}" alt="product" height="200px;">
+                                                    </a>
+                                                </div>
+                                                <div class="product-action">
+                                                    <a href="#" class="icon-box icon-box-1" data-bs-toggle="modal"
+                                                       data-bs-target="#productModalId">
+
+                                                    <i class="fa fa-thumbs-o-up"></i>
+                                                     <i class="fa fa-thumbs-o-up"></i>
+                                                    </a>
+                                                    <a class="icon-box icon-box-1" role="button">
+                                                        <i class="fal fa-heart"></i>
+                                                        <i class="fal fa-heart"></i>
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                            <div class="product__content-3">
+                                                <h6>
+                                                    <a href="{{i.get_absolute_url}}">{{i.product_name|truncatewords:8}}</a>
+                                                </h6>
+                                                <div class="rating-star">
+		    <span>
+			<i class="fa fa-star{% if i.averageReview < 0.5 %}-o{% elif i.averageReview >= 0.5 and i.averageReview < 1 %}-half-o {% endif %}"
+               aria-hidden="true"></i>
+			<i class="fa fa-star{% if i.averageReview < 1.5 %}-o{% elif i.averageReview >= 1.5 and i.averageReview < 2 %}-half-o {% endif %}"
+               aria-hidden="true"></i>
+			<i class="fa fa-star{% if i.averageReview < 2.5 %}-o{% elif i.averageReview >= 2.5 and i.averageReview < 3 %}-half-o {% endif %}"
+               aria-hidden="true"></i>
+			<i class="fa fa-star{% if i.averageReview < 3.5 %}-o{% elif i.averageReview >= 3.5 and i.averageReview < 4 %}-half-o {% endif %}"
+               aria-hidden="true"></i>
+			<i class="fa fa-star{% if i.averageReview < 4.5 %}-o{% elif i.averageReview >= 4.5 and i.averageReview < 5 %}-half-o {% endif %}"
+               aria-hidden="true"></i>
+			</span>
+
+                                                </div>
+
+                                                <div class="price mb-10">
+                                                    <span>रू {{i.price}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="product__add-cart-s text-center">
+                                                <form action="{% url 'add-to-cart' %}">
+                                                    <input type="hidden" name="prod_id" value="{{i.id}}"
+                                                           id="product_id">
+                                                    <button type="submit"
+                                                            class="cart-btn product-modal-sidebar-open-btn d-flex align-items-center justify-content-center w-100">
+                                                        Add to Cart
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+
+                                <p class="my-4 text-center">
+                                    <button id="loadMore" data-total="{{total_data}}" data-limit="3"
+                                            class="btn btn-dark btn-sm">Load More <i
+                                            class="fa fa-sync load-more-icon"></i></button>
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tp-pagination text-center">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="basic-pagination pt-30 pb-30">
+                                    <nav>
+                                        {% if product.has_other_pages %}
+                                        <ul>
+                                            {% if product.has_previous %}
+                                            <li>
+                                                <a href="?page={{product.previous_page_number}}"><i
+                                                        class="fal fa-angle-double-left"></i></a>
+                                            </li>
+                                            {% else %}
+
+                                            <li>
+                                                <a href="#"><i class="fal fa-angle-double-left"></i></a>
+                                            </li>
+                                            {% endif %}
+
+                                            {% for i in product.paginator.page_range %}
+                                            {% if product.number == i %}
+                                            <li>
+                                                <a href="#" class="active">{{i}}</a>
+                                            </li>
+                                            {% else %}
+                                            <li>
+                                                <a href="?page={{i}}">{{i}}</a>
+                                            </li>
+                                            {% endif %}
+                                            {% endfor %}
+
+                                            {% if product.has_next %}
+                                            <li>
+                                                <a href="?page={{product.next_page_number}}">
+                                                    <i class="fal fa-angle-double-right"></i>
+                                                </a>
+                                            </li>
+                                            {% else %}
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fal fa-angle-double-right"></i>
+                                                </a>
+                                            </li>
+                                            {% endif %}
+                                        </ul>
+                                        {% endif %}
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- shop-area-end -->
+</main>
+{% endblock %}
