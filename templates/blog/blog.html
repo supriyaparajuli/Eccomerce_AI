@@ -49,7 +49,7 @@
                                     </div>
                                     <div class="blog-tag blog-tag-2">
                                         {% for cat in blog.categories.all %}
-                                        <a href="blog.html">{{cat}}</a>
+                                        <a href="#">{{cat}}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -83,7 +83,7 @@
                                         </li>
                                         {% endif %}
                                         <li>
-                                            <a href="blog.html" class="active">{{ bloglist.number }}</a>
+                                            <a href="#" class="active">{{ bloglist.number }}</a>
                                         </li>
 
                                         {% if bloglist.has_next %}
@@ -142,7 +142,7 @@
                                     <ul class="n-sidebar-categories">
                                        {% for cat in category_count %}
                                         <li>
-                                            <a href="blog-details.html">
+                                            <a href="#">
                                                 <div class="single-category p-relative mb-10">
                                                     {{cat.categories__title}}
                                                     <span class="category-number">{{ cat.categories__count }}</span>

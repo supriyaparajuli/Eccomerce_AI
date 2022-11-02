@@ -16,7 +16,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Max, Min
 import stripe
-from .forms import ReviewForm, AddressForm, RefundForm
+from .forms import ReviewForm, AddressForm, RefundForm, CommentForm
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.template.loader import render_to_string
 import random
@@ -609,16 +609,25 @@ def blog(request):
 
 def blog_details(request, id):
     maincategory = MainCategory.objects.all().order_by('-id')
+    blogsidelist = Post.objects.all().order_by('-timestamp')[:4]
     post = get_object_or_404(Post, id=id)
     category_count = get_category_count()
-
-    blogsidelist = Post.objects.all().order_by('-timestamp')[:4]
+    form = CommentForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            form.instance.user = request.user
+            form.instance.post = post
+            form.save()
+            return redirect(reverse("blog_detail", kwargs={
+                'id': post.pk
+            }))
 
     context = {
         'post': post,
         'maincategory': maincategory,
         'blogsidelist': blogsidelist,
         'category_count': category_count,
+        'form': form,
 
     }
 
@@ -673,8 +682,7 @@ class RequestRefundView(View):
                 refund.Image = image
                 refund.save()
 
-                messages.success(request,
-                                 "Your request was received. You will shortly receive an email if refund is successfully granted.")
+                messages.success(request, "Your request was received. You will shortly receive an email if refund is successfully granted.")
                 return redirect("request-refund")
 
             except ObjectDoesNotExist:

@@ -1,5 +1,5 @@
 from django import forms
-from .models import ReviewRating, Address
+from .models import ReviewRating, Address, Comment
 
 
 class ReviewForm(forms.ModelForm):
@@ -26,3 +26,14 @@ class RefundForm(forms.Form):
     email = forms.EmailField()
     image = forms.ImageField()
 
+
+
+class CommentForm(forms.ModelForm):
+    content = forms.CharField(widget=forms.Textarea(attrs={
+        'class': 'form-control',
+        'placeholder': 'Type your comment',
+        'id': 'usercomment',
+    }))
+    class Meta:
+        model = Comment
+        fields =  ('content',)

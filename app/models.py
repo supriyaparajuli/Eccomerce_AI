@@ -281,8 +281,12 @@ class Post(models.Model):
         from django.urls import reverse
 
         return reverse('blog_detail', kwargs={
-            'id' : self.id,
+            'id': self.id,
         })
+
+    @property
+    def get_comments(self):
+        return self.comments.all().order_by('-timestamp')
 
 
 class Signup(models.Model):
@@ -291,3 +295,13 @@ class Signup(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
+    post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
