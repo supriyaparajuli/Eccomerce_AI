@@ -98,6 +98,14 @@ def REGISTER(request):
         lastname = request.POST.get('lastname')
 
         try:
+            #here we check form validation
+            if len(username)<8:
+                messages.error(request, " Your user name must be under 8 characters")
+                return redirect('login')
+
+            if not username.isalnum():
+                messages.error(request, " User name should only contain letters and numbers")
+                return redirect('login')
     #here we check user is allready exist or not
             if User.objects.filter(username=username).exists():
                 messages.error(request, 'Username already exists')
