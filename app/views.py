@@ -1,4 +1,5 @@
 from decimal import Decimal
+from lib2to3.pgen2 import token
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponse
@@ -6,9 +7,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
+from django.conf import settings
+from django.core.mail import send_mail
 
 from E_Commerce import settings
-from .models import Slider, Banner, Category, SubCategory, MainCategory, Product, Color, Brand, Cart, Coupon_Code, \
+from .models import Profile, Slider, Banner, Category, SubCategory, MainCategory, Product, Color, Brand, Cart, Coupon_Code, \
     ReviewRating, Address, Order, Refund, Post, BlogCategory, Signup
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -21,6 +24,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.template.loader import render_to_string
 import random
 import string
+import uuid
 from django.core.mail import EmailMessage
 
 stripe.api_key = "sk_test_51Lhx5XHYuFGYD1XqC1CMimNsVB146a0a8jMYlSjbbAqKpQfYgY9vASBqVr06ux9sJo4JOYbkcs7z1rOSdmM7N5LD00nIJXkZxl"
@@ -93,39 +97,126 @@ def REGISTER(request):
         firstname = request.POST.get('firstname')
         lastname = request.POST.get('lastname')
 
-        if User.objects.filter(username=username).exists():
-            messages.error(request, 'Username already exists')
+        try:
+    #here we check user is allready exist or not
+            if User.objects.filter(username=username).exists():
+                messages.error(request, 'Username already exists')
+                return redirect('login')
+
+    #here we check email is allready exist or not
+            if User.objects.filter(email=email).exists():
+                messages.error(request, 'Email id already exists')
+                return redirect('login')
+
+    #here we store these field
+            # user = User(
+            #     username=username,
+            #     email=email,
+            #     first_name=firstname,
+            #     last_name=lastname,
+            # )
+
+            user = User(
+                username=username,
+                email=email,
+                first_name=firstname,
+                last_name=lastname,
+            )
+            user.set_password(password)
+
+            #here we saving the user object data
+            user.save()
+
+            # here we first store the random token
+            auth_token = str(uuid.uuid4())
+            profile_obj = Profile.objects.create(user=user,auth_token=auth_token)
+
+            #here we saving the profile object data
+            profile_obj.save()
+
+            # here we call the send_mail_after_registration function call 
+            send_mail_after_registration(email,auth_token)
+            
+            #messages.success(request, 'Your account has been Successfully Registered !')
+
+            return redirect('/token')
+
+        except Exception as e:
+            print(e)
+    return render(request, 'registration/login.html')
+
+
+# here we make a function that send the link after the user registration
+
+def send_mail_after_registration(email , token):
+    subject = 'Your accounts need to be verified'
+    message = f'Hi paste the link to verify your account http://127.0.0.1:8000/verify/{token}'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+    send_mail(subject, message , email_from ,recipient_list )
+
+
+
+# here we make a function for the verify email 
+def verify(request , auth_token):
+    try:
+        profile_obj = Profile.objects.filter(auth_token = auth_token).first()
+    
+
+        if profile_obj:
+            if profile_obj.is_verified:
+                messages.success(request, 'Your account is already verified.')
+                return redirect('login')
+            profile_obj.is_verified = True
+            profile_obj.save()
+            messages.success(request, 'Your account is  verified .')
             return redirect('login')
+        else:
+            return redirect('/error')
+    except Exception as e:
+        print(e)
+        return redirect('/')
 
-        if User.objects.filter(email=email).exists():
-            messages.error(request, 'Email id already exists')
-            return redirect('login')
-        user = User(
-            username=username,
-            email=email,
-            first_name=firstname,
-            last_name=lastname,
-        )
-        user.set_password(password)
-        user.save()
-        messages.success(request, 'Profile Is Successfully Registered !')
 
-        return redirect('login')
-    return render(request, 'account/my-account.html')
-
+def error_page(request):
+    return  render(request , 'error.html')
 
 def LOGIN(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            messages.error(request, 'Email and Password are Invalid !')
+        user_obj = User.objects.filter(username = username).first()
+        if user_obj is None:
+            messages.success(request, 'User not found.')
             return redirect('login')
+        
+        
+        profile_obj = Profile.objects.filter(user = user_obj ).first()
+
+        if not profile_obj.is_verified:
+            messages.success(request, 'Profile is not verified check your mail.')
+            return redirect('login')
+
+        user = authenticate(username = username , password = password)
+        if user is None:
+            messages.success(request, 'Wrong password.')
+            return redirect('login')
+        
+        login(request , user)
+        return redirect('/')
+
+    return render(request , 'login.html')
+
+
+# here we make a function for a success page html
+def success_page(request):
+    return render(request,"registration/success.html")
+
+# when user creae a account than that time we have sent a token with respect to valid email
+def token_send(request):
+    return render(request,"registration/token_send.html")
+
 
 
 @login_required(login_url='/accounts/login/')

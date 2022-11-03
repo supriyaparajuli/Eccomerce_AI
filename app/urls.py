@@ -9,12 +9,22 @@ from .views import RequestRefundView
 urlpatterns = [
     path('base/', views.BASE, name='base'),
     path('', views.HOME, name='home'),
+    
+    #when user create a account then we will send a token with valid email ,se we valid gmail is valid or not
+    #so we make a path for that system
+    path('token', views.token_send, name="token_send"),
+    path('success', views.success_page, name="success_page"),
+    path('error/', views.error_page, name='error'),
+    path('verify/<auth_token>', views.verify, name='verify'),
+
     path('about/', views.ABOUT, name='about'),
     path('contact/', views.CONTACT, name='contact'),
     path('product/<slug:slug>', views.PRODUCT_DETAILS, name='product_detail'),
     path('product/', views.PRODUCT, name='product'),
     path('filter-data', views.filter_data, name='filter_data'),
     path('404/', views.Error404, name='404'),
+
+
     path('account/myaccount/', views.MY_ACCOUNT, name='my_account'),
     path('account/register/', views.REGISTER, name='handleregister'),
     path('account/login/', views.LOGIN, name='handlelogin'),

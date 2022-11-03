@@ -85,15 +85,15 @@
                             <form action="{% url 'handleregister' %}" method="post">
                                 {% csrf_token %}
                                 <label for="firstname">First Name <span>*</span></label>
-                                <input id="firstname" type="text" placeholder="Enter FirstName" name="firstname">
+                                <input id="firstname" type="text" placeholder="Enter FirstName" name="firstname" required>
                                 <label for="lastname">Last Name <span>*</span></label>
-                                <input id="lastname" type="text" placeholder="Enter LastName" name="lastname">
+                                <input id="lastname" type="text" placeholder="Enter LastName" name="lastname" required>
                                 <label for="username">Username <span>*</span></label>
-                                <input id="username" type="text" placeholder="Enter Username" name="username">
+                                <input id="username" type="text" placeholder="Enter Username" name="username" required>
                                 <label for="email-id">Email Address <span>*</span></label>
-                                <input id="email-id" type="text" placeholder="Email address..." name="email">
+                                <input id="email-id" type="text" placeholder="Email address..." name="email" required>
                                 <label for="userpass">Password <span>*</span></label>
-                                <input id="userpass" type="password" placeholder="Enter password..." name="password">
+                                <input id="userpass" type="password" placeholder="Enter password..." name="password" required>
                                 <div class="login-action mb-10 fix">
                                     <p>Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our <a href="#">privacy policy</a>.</p>
                                 </div>

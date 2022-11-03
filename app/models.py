@@ -26,6 +26,15 @@ class Slider(models.Model):
     def __str__(self):
         return self.Brand_Name
 
+#here we make a profile db for the email authnetication save 
+class Profile(models.Model):
+    user = models.OneToOneField(User , on_delete=models.CASCADE)
+    auth_token = models.CharField(max_length=100 )
+    is_verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username
 
 class Banner(models.Model):
     image = models.ImageField(upload_to='media/banner_img')
