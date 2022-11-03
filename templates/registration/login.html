@@ -2,6 +2,34 @@
 {% block content %}
 {% load static %}
 
+<style>
+    .showPasswordToggle{
+        cursor: pointer;
+        transition: all;
+        color: black;
+        
+    }
+
+    .showPasswordToggle:hover{
+        transform: scale(1.2);
+        color: green;
+        
+    }
+
+    .showPasswordToggleLogin{
+        cursor: pointer;
+        transition: all;
+        color: black;
+        
+    }
+
+    .showPasswordToggleLogin:hover{
+        transform: scale(1.2);
+        color: green;
+        
+    }
+</style>
+
         <!-- page-banner-area-start -->
         <div class="page-banner-area page-banner-height-2" data-background="{% static 'assets/img/banner/page-banner-4.jpg' %}">
             <div class="container">
@@ -66,6 +94,8 @@
                                 <input id="name" type="text" placeholder="Enter Username" name="username">
                                 <label for="pass">Password <span>*</span></label>
                                 <input id="pass" type="password" placeholder="Enter password..." name="password">
+                                <small class="float-right py-3 showPasswordToggleLogin">SHOW</small>
+
                                 <div class="login-action mb-10 fix">
                                     <span class="log-rem f-left">
                                        <input id="remember" type="checkbox">
@@ -93,7 +123,8 @@
                                 <label for="email-id">Email Address <span>*</span></label>
                                 <input id="email-id" type="text" placeholder="Email address..." name="email" required>
                                 <label for="userpass">Password <span>*</span></label>
-                                <input id="userpass" type="password" placeholder="Enter password..." name="password" required>
+                                <input id="userpass" type="password" placeholder="Enter password..." name="password"  required>
+                                <small class="float-right py-3 showPasswordToggle">SHOW</small>
                                 <div class="login-action mb-10 fix">
                                     <p>Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our <a href="#">privacy policy</a>.</p>
                                 </div>
@@ -157,5 +188,47 @@
         <!-- cta-area-end -->
 
 
+        <!-- here we write a javasript code for the toggle password -->
+        <script>
+
+            const showPasswordToggle =document.querySelector('.showPasswordToggle');
+            const userpass =document.querySelector('#userpass');
+
+            // here we make a function for the toggle
+            const handleToggleInput=(e)=>{
+                if(showPasswordToggle.textContent==="SHOW"){
+                    showPasswordToggle.textContent="HIDE";
+                    userpass.setAttribute("type","text")
+                }
+                else{
+                    showPasswordToggle.textContent="SHOW";
+                    userpass.setAttribute("type","password")
+                }
+
+            }
+
+            showPasswordToggle.addEventListener("click",handleToggleInput);
+
+
+
+            //*************** here we write a code for the login toggle
+            const showPasswordToggleLogin =document.querySelector('.showPasswordToggleLogin');
+            const pass =document.querySelector('#pass');
+
+            // here we make a function for the toggle
+            const handleToggleInputLogin=(e)=>{
+                if(showPasswordToggleLogin.textContent==="SHOW"){
+                    showPasswordToggleLogin.textContent="HIDE";
+                    pass.setAttribute("type","text")
+                }
+                else{
+                    showPasswordToggleLogin.textContent="SHOW";
+                    pass.setAttribute("type","password")
+                }
+
+            }
+
+            showPasswordToggleLogin.addEventListener("click",handleToggleInputLogin);
+         </script>
 
 {% endblock %}

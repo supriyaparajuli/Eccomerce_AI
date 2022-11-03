@@ -1,6 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+
+
+
+<style>
+    .showPasswordToggleProfileUpdate{
+        cursor: pointer;
+        transition: all;
+        color: black;
+        
+    }
+
+    .showPasswordToggleProfileUpdate:hover{
+        transform: scale(1.2);
+        color: green;
+        
+    }
+
+    </style>
+
 <!-- page banner area start -->
 <div class="page-banner-area page-banner-height-2" data-background="{% static 'assets/img/banner/page-banner-4.jpg' %}">
     <div class="container">
@@ -57,6 +76,7 @@
                         <input id="pass" type="text" placeholder="Enter Username..." name="username" value="{{user.username}}">
                         <label for="userpass">Password<span>*</span></label>
                         <input id="userpass" type="password" placeholder="Fill if you want to change password" name="password">
+                        <small class="float-right py-3 showPasswordToggleProfileUpdate">SHOW</small>
                 <div class="row">
                     <div class="col-6">
                         <button type="submit" class="tp-in-btn w-100">Update Profile</button>
@@ -81,4 +101,36 @@
         </form>
     </div>
 </div>
+
+
+
+
+
+
+<script>
+
+  
+
+    //*************** here we write a code for the login toggle
+    const showPasswordToggleProfileUpdate =document.querySelector('.showPasswordToggleProfileUpdate');
+    const userpass =document.querySelector('#userpass');
+
+    // here we make a function for the toggle
+    const handleToggleInputProfileUpdate=(e)=>{
+        if(showPasswordToggleProfileUpdate.textContent==="SHOW"){
+            showPasswordToggleProfileUpdate.textContent="HIDE";
+            userpass.setAttribute("type","text")
+        }
+        else{
+            showPasswordToggleProfileUpdate.textContent="SHOW";
+            userpass.setAttribute("type","password")
+        }
+
+    }
+
+    showPasswordToggleProfileUpdate.addEventListener("click",handleToggleInputProfileUpdate);
+ </script>
+
+
 {% endblock %}
+
