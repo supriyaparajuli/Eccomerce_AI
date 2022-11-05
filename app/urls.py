@@ -10,6 +10,7 @@ urlpatterns = [
     path('base/', views.BASE, name='base'),
     path('', views.HOME, name='home'),
     path('about/', views.ABOUT, name='about'),
+    path('productRecommend/', views.generateRecommendation, name='logic'),
     path('contact/', views.CONTACT, name='contact'),
     path('product/<slug:slug>', views.PRODUCT_DETAILS, name='product_detail'),
     path('product/', views.PRODUCT, name='product'),

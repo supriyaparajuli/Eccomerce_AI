@@ -305,3 +305,11 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+# here we add a model class for the Product recommendation
+class Rating(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,default=None)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE,default=None)
+    ratings= models.CharField(max_length=70)
+    rated_date=models.DateTimeField(auto_now_add=True)

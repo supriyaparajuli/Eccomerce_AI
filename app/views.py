@@ -5,6 +5,9 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils.decorators import method_decorator
+import pandas as pd
+import numpy as np
+from cmath import sqrt
 from django.views import View
 
 from E_Commerce import settings
@@ -89,6 +92,157 @@ def MY_ACCOUNT(request):
 
     return render(request, 'account/my-account.html', {'maincategory': maincategory})
 
+# adding function for the product recommendation product
+def generateRecommendation(request):
+    productsAll= Product.objects.all()
+    productRating=ReviewRating.objects.all()
+    x=[] 
+    y=[]
+    A=[]
+    B=[]
+    C=[]
+    D=[]
+    # here we all data set into the Product Frame
+    for item in productsAll:
+        x=[item.id,item.featured_image,item.product_name,item.Product_information,item.Description,item.price,item.Categories]
+        y+=[x]
+
+    products_df=pd.DataFrame(y,columns=['productId','featured_image','product_name','product_information','Description','price','Categories'])
+    print("Product Data Frame")
+    print(products_df)
+    # rating data frames
+    print(productRating)
+
+    for item in productRating:
+        A= [item.user.id,item.product,item.rating]
+        B+=[A]
+
+    rating_df = pd.DataFrame(B,columns=['userId','productName','rating'])
+    print("Rating Data Frame")
+
+    rating_df['userId']=rating_df['userId'].astype(str).astype(np.int)
+    rating_df['productName']=rating_df['productName'].astype(str)
+    rating_df['rating']=rating_df['rating'].astype(str).astype(np.float)
+    # .astype(np.float64)
+    print(rating_df)
+   
+    if request.user.is_authenticated:
+        userId = request.user.id
+        userInput=ReviewRating.objects.select_related('product').filter(user=userId)
+
+        print("user le review gareko kati wota",userInput)
+        if  userInput.count()==0:
+            userInput = None
+            params={}
+            params['recommended']=None
+            return render(request,'product/product_recommendation.html',params)
+
+        else:
+            for item in userInput:
+                C=[item.product.product_name,item.rating]
+                D+=[C]
+
+            inputProduct=pd.DataFrame(D,columns=['product_name','rating'])
+            print("product by the user Data Frame")
+            inputProduct['rating']=inputProduct['rating'].astype(str).astype(np.float)
+            print(inputProduct)
+
+
+            # filtering out the product by title
+            inputId = products_df[products_df['product_name'].isin(inputProduct['product_name'].tolist())]
+            inputProduct = pd.merge(inputId, inputProduct)
+
+            print(inputProduct)
+
+            # filtering out users that have watched product that the input has watched and storing it
+
+            userSubset = rating_df[rating_df['productName'].isin(inputProduct['product_name'].tolist())]
+            print(userSubset.head())
+
+            userSubsetGroup = userSubset.groupby(['userId'])
+
+            userSubsetGroup = sorted(userSubsetGroup, key=lambda x:len(x[1]),reverse=True)
+
+            print(userSubsetGroup[0:])
+
+            userSubsetGroup = userSubsetGroup[0:]
+
+            pearsonCorrelationDict = {}
+
+
+            for name, group in userSubsetGroup:
+                group = group.sort_values(by='userId')
+                inputProduct = inputProduct.sort_values(by='product_name')
+
+                nRatings = len(group)
+
+                temp_df = inputProduct[inputProduct['product_name'].isin(group['productName'].tolist())]
+
+                tempRatingList=temp_df['rating'].tolist()
+
+                tempGroupList = group['rating'].tolist()
+
+                #Now let's calculate the pearson correlation between two users, so called, x and y
+                Sxx = sum([i**2 for i in tempRatingList]) - pow(sum(tempRatingList),2)/float(nRatings)
+                Syy = sum([i**2 for i in tempGroupList]) - pow(sum(tempGroupList),2)/float(nRatings)
+                Sxy = sum( i*j for i, j in zip(tempRatingList, tempGroupList)) - sum(tempRatingList)*sum(tempGroupList)/float(nRatings)
+
+                #If the denominator is different than zero, then divide, else, 0 correlation.
+                if Sxx != 0 and Syy != 0:
+                    pearsonCorrelationDict[name] = Sxy/sqrt(Sxx*Syy)
+                else:
+                    pearsonCorrelationDict[name] = 0
+
+            print(pearsonCorrelationDict.items())
+
+            pearsonDF = pd.DataFrame.from_dict(pearsonCorrelationDict, orient='index')
+            pearsonDF.columns = ['similarityIndex']
+            pearsonDF['userId'] = pearsonDF.index
+            pearsonDF.index = range(len(pearsonDF))
+            print(pearsonDF.head())
+
+
+            topUsers=pearsonDF.sort_values(by='similarityIndex', ascending=False)[0:]
+            print(topUsers.head())
+
+            topUserRating=topUsers.merge(rating_df,left_on='userId',right_on='userId',how='inner')
+            topUserRating.head()
+
+            #Multiplies the similarity by the user's ratings
+            topUserRating['weightedRating'] = topUserRating['similarityIndex']*topUserRating['rating']
+            topUserRating.head()
+
+            #Applies a sum to the topUsers after grouping it up by userId
+            tempTopUsersRating = topUserRating.groupby('productName').sum()[['similarityIndex','weightedRating']]
+            tempTopUsersRating.columns = ['sum_similarityIndex','sum_weightedRating']
+            tempTopUsersRating.head()
+
+            # creates an empty dataframe
+            recommendation_df = pd.DataFrame()
+
+            # now we take the weighted average
+            recommendation_df['weighted average recommendation score'] = tempTopUsersRating['sum_weightedRating']/tempTopUsersRating['sum_similarityIndex']
+            recommendation_df['productName'] = tempTopUsersRating.index
+            recommendation_df.head()
+
+            recommendation_df = recommendation_df.sort_values(by='weighted average recommendation score', ascending=False)
+            recommender = products_df.loc[products_df['product_name'].isin(recommendation_df.head(5)['productName'].tolist())]
+            print(recommender)
+            # print("helllooooo")
+            params={}
+            params['recommended']=recommender.to_dict('records')
+            print(recommender.to_dict('records'))
+         
+            return render(request,'product/product_recommendation.html',params)
+            
+    else:
+        
+            userInput = None
+            params={}
+            params['recommended']=None
+            return render(request,'product/product_recommendation.html',params)
+
+  
 
 def REGISTER(request):
     if request.method == "POST":
