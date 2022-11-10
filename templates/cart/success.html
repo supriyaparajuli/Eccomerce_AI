@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div id="box" style="width:800px; margin:0 auto;" >
+
+
+		<img id="success-icon" src="{% static 'assets/img/check.png' %}">
+		<h4>Order Successful of Rs {{amount}}!</h4>
+		<p>You should receive a receipt to the email you provided shortly :)</p>
+		<hr>
+		<a class="myButton" href="{% url 'orders' %}"><h1>&#x2190; Track Your Order</h1> </a>
+	</div>
+
+
+{% endblock %}
+
+
+

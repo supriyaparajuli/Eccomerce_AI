@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% block script %}
+
+<script type="text/javascript" src="{% static 'myscript.js' %}"></script>
+
+
+{% endblock %}
+
+
+<main>
+    <!-- page-banner-area-start -->
+    <div class="page-banner-area page-banner-height-2"
+         data-background="{% static 'assets/img/banner/page-banner-4.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page-banner-content text-center">
+                        <h4 class="breadcrumb-title">Your Cart</h4>
+                        <div class="breadcrumb-two">
+                            <nav>
+                                <nav class="breadcrumb-trail breadcrumbs">
+                                    <ul class="breadcrumb-menu">
+                                        <li class="breadcrumb-trail">
+                                            <a href="{% url 'home' %}"><span>Home</span></a>
+                                        </li>
+                                        <li class="trail-item">
+                                            <span>Cart</span>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page-banner-area-end -->
+
+    <!-- cart-area-start -->
+    <section class="cart-area pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form action="#">
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="product-thumbnail">Images</th>
+                                    <th class="cart-product-name">Product</th>
+                                    <th class="product-price">Unit Price</th>
+                                    <th class="product-quantity">Quantity</th>
+                                    <th class="product-subtotal">Total</th>
+                                    <th class="product-remove">Remove</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for cart_product in cart_products %}
+
+                                <tr id="id{{cart_product.id}}">
+                                    <td class="product-thumbnail"><a href="shop-details.html"><img
+                                            src="{{cart_product.product.featured_image}}" alt=""></a></td>
+                                    <td class="product-name"><a href="shop-details.html">Rs.{{cart_product.product.product_name}}</a>
+                                    </td>
+                                    <td class="product-price"><span
+                                            class="amount">Rs.{{cart_product.product.price}}</span></td>
+                                    <td class="product-quantity">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <a class="minus-cart text-center btn btn-light" pid="{{cart_product.id}}">&#x2796;</a>
+
+                                            </div>
+
+                                            <div class="col-4">
+                                                <span class="form-control border-0 text-center">{{cart_product.quantity}}</span>
+
+                                            </div>
+                                            <div class="col-4">
+                                                <a class="plus-cart text-center btn btn-light" pid="{{cart_product.id}}">&#x2795;</a>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="product-subtotal"><span
+                                            class="amount" id="subamount">Rs.{{cart_product.unit_total_price}}</span></td>
+
+                                    <td class="product-remove"><a href="{% url 'remove-cart' cart_product.id%}"><i
+                                            class="fa fa-times btn btn-danger"></i></a></td>
+                                </tr>
+                                {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="coupon-all">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-end">
+                            <div class="col-md-5">
+                                <div class="cart-page-total card border-0 rounded-0 p-lg-4" style="background-color:#E9ECEF">
+                                    <div class="jumbotron">
+                                    <h2>Cart totals</h2>
+                                    <ul class="mb-20">
+                                        <li>Subtotal <span class="text-secondary" id="subtotal">Rs.{{amount}}</span></li>
+                                        <li>Tax <span class="text-secondary">Rs.{{tax}}</span></li>
+                                        <li>Shipping Amount <span class="text-secondary">Rs.{{shipping_amount}}</span>
+                                        </li>
+
+                                        <li><strong class="text-dark">Total</strong> <span class="text-dark" id="totalamount"><strong>Rs.{{total_amount}}</strong></span></li>
+
+                                    </ul>
+
+                                    <a class="cart-btn product-modal-sidebar-open-btn d-flex align-items-center justify-content-center w-100" href="{% url 'place_order' %}"> Proceed To CheckOut</a>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- cart-area-end -->
+
+    <!-- cta-area-start -->
+    <!-- cta-area-end -->
+
+</main>
+
+{% endblock %}
+

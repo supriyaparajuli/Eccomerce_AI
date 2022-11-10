@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% block script %}
+<script src="{% static 'chatbot.js' %}" type="text/javascript"></script>
+
+{% endblock %}
+<!-- page-banner-area-start -->
+        <div class="page-banner-area page-banner-height" data-background="{% static 'assets/img/banner/page-banner-3.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="page-banner-content text-center">
+                            <h4 class="breadcrumb-title">FAQs</h4>
+                            <div class="breadcrumb-two">
+                                <nav>
+                                   <nav class="breadcrumb-trail breadcrumbs">
+                                      <ul class="breadcrumb-menu">
+                                         <li class="breadcrumb-trail">
+                                            <a href="index.html"><span>Home</span></a>
+                                         </li>
+                                         <li class="trail-item">
+                                            <span>FAQs</span>
+                                         </li>
+                                      </ul>
+                                   </nav> 
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- page-banner-area-end -->
+
+        <!-- faq-area-start -->
+        <div class="faq-area mt-70 mb-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="single-faqs mb-40">
+                            <div class="faq-title">
+                                <h5>Order and Returns</h5>
+                            </div>
+                            <div class="faq-content mt-10">
+                                <div class="accordion" id="accordionExample1">
+                                      <div class="accordion-item">
+                                         <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                Can I order over the phone?
+                                            </button>
+                                         </h2>
+                                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                            <p>We currently only have the desktop site, app in appstore and google playstore coming soon.</p>
+                                            </div>
+                                         </div>
+                                      </div>
+                                      <div class="accordion-item">
+                                         <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                            Can I track my Order ?
+                                            </button>
+                                         </h2>
+                                         <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <p>Yes, you can track your order and we will also provide you with SMS and e-mail to ensure your order reaches successfully</p> </div>
+                                         </div>
+                                      </div>
+                                      <div class="accordion-item">
+                                         <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                What are various ways of categorization?
+                                            </button>
+                                         </h2>
+                                         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                            <p> Various ways of categorization are category, brand, color & price.</p>
+                                            </div>
+                                         </div>
+                                      </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="single-faqs mb-40">
+                            <div class="faq-title">
+                                <h5>Ordering from AYO</h5>
+                            </div>
+                            <div class="faq-content mt-10">
+                                <div class="accordion" id="accordionExample2">
+                                      <div class="accordion-item">
+                                         <h2 class="accordion-header" id="heading1">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                            What is the rules of Payment?
+                                            </button>
+                                         </h2>
+                                         <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="heading1" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                            <p>You can order via Paypal, Visa, Mastercard, American Express and various other credit/debit card but before that make sure you add your current address location so we can send the order in the desired location</p>
+                                            </div>
+                                         </div>
+                                      </div>
+                                      <div class="accordion-item">
+                                         <h2 class="accordion-header" id="heading2">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="true" aria-controls="collapseTwo">
+                                                How much do I need to pay?
+                                            </button>
+                                         </h2>
+                                         <div id="collapse2" class="accordion-collapse collapse show" aria-labelledby="heading2" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                            <p>You must have an order maximum of Rs 1 million and a minimum of Rs 500.</p>
+                                            </div>
+                                         </div>
+                                      </div>
+                                      <div class="accordion-item">
+                                         <h2 class="accordion-header" id="heading3">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                                Who is the founder of this site ?
+                                            </button>
+                                         </h2>
+                                         <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                            <p>The founder of this site is Ankit Singh, currently studying Bachelor In Software Engineering in NCIT, final year.</p></div>
+                                         </div>
+                                      </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- faq-area-end -->
+
+        <!-- cta-area-start -->
+        <section class="cta-area d-ldark-bg pt-55 pb-10">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="cta-item cta-item-d mb-30">
+                            <h5 class="cta-title">Follow Us</h5>
+                            <p>We make consolidating, marketing and tracking your social media website easy.</p>
+                            <div class="cta-social">
+                                <div class="social-icon">
+                                    <a href="https://www.facebook.com" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://www.twitter.com" class="twitter"><i class="fab fa-twitter"></i></a>
+                                    <a href="https://www.youtube.com" class="youtube"><i class="fab fa-youtube"></i></a>
+                                    <a href="https://www.linkedin.com" class="linkedin"><i class="fab fa-linkedin-in"></i></a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="cta-item mb-30">
+                            <h5 class="cta-title">Download App</h5>
+                            <p>Kinam App is coming soon on App Store & Google Play. Get it now.</p>
+                            <div class="cta-apps">
+                                <div class="apps-store">
+                                    <img src="{% static 'assets/img/brand/app_ios.png' %}" alt="">
+                                    <img src="{% static 'assets/img/brand/app_android.png' %}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- cta-area-end -->
+{% endblock %}

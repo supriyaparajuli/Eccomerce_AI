@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+      <div class="container py-5">
+        <div class="col-md-8 offset-2">
+
+        <h1 class="display-4 mb-4">Add / Update Blog Posts</h1>
+
+
+        <div class="card mb-4" id="forms">
+          <div class="card-header">
+            <small>
+            Write a blog post here
+            </small>
+          </div>
+          <div class="card-body">
+            {{form.media}}
+
+            <form method="POST" action="." enctype="multipart/form-data">
+              <fieldset>
+                {% csrf_token %}
+            {{form|crispy}}
+       <br> <button class="btn btn-primary" type="submit"> Submit</button>
+              </fieldset>
+            </form>
+
+
+          </div>
+        </div>
+
+        </div>
+      </div>
+
+
+
+
+{% endblock %}
