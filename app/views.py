@@ -102,6 +102,13 @@ def MY_ACCOUNT(request):
     return render(request, 'account/my-account.html', {'maincategory': maincategory})
 
 
+
+
+
+
+
+
+
 # adding function for the product recommendation product
 def generateRecommendation(request):
     maincategory = MainCategory.objects.all().order_by('-id')
@@ -259,6 +266,14 @@ def generateRecommendation(request):
                 return render(request, 'product/product_recommendation.html', params)
 
     return render(request, 'product/product_recommendation.html', params)
+
+
+
+
+
+
+
+
 
 
 def REGISTER(request):
