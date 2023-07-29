@@ -1,0 +1,9 @@
+
+
+The refund you requested has been granted Mr/Mrs. {{name}} of amount Rs.{{sum}}.
+
+The returned items and their refund amount are :-
+  {% for refund in refunds %}
+
+  {{refund.product.product_name}} --- Rs.{{refund.price}}
+    {% endfor %}

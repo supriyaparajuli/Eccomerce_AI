@@ -1,0 +1,4 @@
+<form method="POST" action="{% url 'send_friend_request' receiver.id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Send Friend Request</button>
+  </form>

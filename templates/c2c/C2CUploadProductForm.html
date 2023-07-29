@@ -1,0 +1,126 @@
+<!-- C2CUploadProductForm.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="card upload-product-card">
+    <div class="card-body">
+      <h5 class="card-title text-center mb-4">Upload Product</h5>
+      <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="form-group row">
+          <label for="{{ form.productName.id_for_label }}" class="col-sm-3 col-form-label">Product Name</label>
+          <div class="col-sm-9">
+            {{ form.productName }}
+            <div class="invalid-feedback">{{ form.productName.errors }}</div>
+          </div>
+        </div>
+
+        <input type="hidden" name="crcProductUploadId" value="{{ user.id }}">
+        <div class="form-group row">
+          <label for="{{ form.productDescription.id_for_label }}" class="col-sm-3 col-form-label">Description</label>
+          <div class="col-sm-9">
+            {{ form.productDescription }}
+            <div class="invalid-feedback">{{ form.productDescription.errors }}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="{{ form.status.id_for_label }}" class="col-sm-3 col-form-label">Status</label>
+          <div class="col-sm-9">
+            {{ form.status }}
+            <div class="invalid-feedback">{{ form.status.errors }}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="{{ form.price_choice.id_for_label }}" class="col-sm-3 col-form-label">Price</label>
+          <div class="col-sm-9">
+            {{ form.price_choice }}
+            <div class="invalid-feedback">{{ form.price_choice.errors }}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="{{ form.delivery_choice.id_for_label }}" class="col-sm-3 col-form-label">Delivery</label>
+          <div class="col-sm-9">
+            {{ form.delivery_choice }}
+            <div class="invalid-feedback">{{ form.delivery_choice.errors }}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="{{ form.phone_number.id_for_label }}" class="col-sm-3 col-form-label">Phone Number</label>
+          <div class="col-sm-9">
+            {{ form.phone_number }}
+            <div class="invalid-feedback">{{ form.phone_number.errors }}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="{{ form.image.id_for_label }}" class="col-sm-3 col-form-label">Product Image</label>
+          <div class="col-sm-9">
+            {{ form.image }}
+            <div class="invalid-feedback">{{ form.image.errors }}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-9 offset-sm-3">
+            <button type="submit" class="btn btn-primary btn-block btn-lg rounded-pill">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  .upload-product-card {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .upload-product-card .col-form-label {
+    font-weight: bold;
+    color: #007bff;
+  }
+
+  .upload-product-card .form-group {
+    margin-bottom: 20px;
+  }
+
+  /* Input field styles */
+  .upload-product-card input[type="text"],
+  .upload-product-card select {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 10px;
+    transition: border-color 0.3s ease;
+  }
+
+  .upload-product-card input[type="text"]:focus,
+  .upload-product-card select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+
+  /* Text color styles */
+  .upload-product-card label,
+  .upload-product-card .btn-primary {
+    color: #00ff40;
+
+  }
+
+  /* Hover effect for the submit button */
+  .upload-product-card .btn-primary:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    
+  }
+
+  .upload-product-card .btn-primary:active {
+    transform: scale(0.95);
+  }
+</style>
+
+{% endblock %}

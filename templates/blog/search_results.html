@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main>
+        <div class="page-banner-area page-banner-height-2" data-background="{% static 'assets/img/banner/page-banner-4.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="page-banner-content text-center">
+                            <h4 class="breadcrumb-title">Blog Search Results</h4>
+                            <div class="breadcrumb-two">
+                                <nav>
+                                   <nav class="breadcrumb-trail breadcrumbs">
+                                      <ul class="breadcrumb-menu">
+                                         <li class="breadcrumb-trail">
+                                            <a href="{% url 'home' %}"><span>Home</span></a>
+                                         </li>
+                                         <li class="trail-item">
+                                            <span>Blog Search</span>
+                                         </li>
+                                      </ul>
+                                   </nav>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    <div class="blog-area mt-120 mb-75">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-7">
+                    <div class="row">
+                    {% for post in queryset %}
+                        <div class="col-xl-6">
+                            <div class="single-smblog mb-30">
+                                <div class="smblog-thum">
+                                    <div class="blog-image w-img">
+                                        <a href="{{ post.get_absolute_url }}"><img
+                                                src="{{post.thumbnail.url}}"></a>
+                                    </div>
+                                    <div class="blog-tag blog-tag-2">
+                                        {% for cat in post.categories.all %}
+                                        <a href="#">{{cat}}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="smblog-content smblog-content-3">
+                                    <h6><a href="{{ blog.get_absolute_url }}">{{post.title}}</a></h6>
+                                    <span class="author mb-10">Posted by: <a href="#">{{post.author}}</a></span>
+                                    <p>{{post.overview}}</p>
+                                    <div class="smblog-foot pt-15">
+                                        <div class="post-readmore">
+                                            <a href="{{ post.get_absolute_url }}"> Read More <span class="icon"></span></a>
+                                        </div>
+                                        <div class="post-date">
+                                            <a href="{{ post.get_absolute_url }}">{{post.timestamp|timesince}} ago</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-5">
+                    <div class="news-sidebar pl-10">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="widget">
+                                    <h6 class="sidebar-title"> Search Here</h6>
+                                    <form action="{% url 'search_blog' %}">
+                                    <div class="n-sidebar-search">
+                                        <input type="text" name="q" placeholder="Search your keyword...">
+                                        <button type="submit"><a><i class="fal fa-search"></i></a></button>
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</main>
+
+
+
+
+
+
+
+
+
+{% endblock %}

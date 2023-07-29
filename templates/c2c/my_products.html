@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <!-- Modal for displaying product details -->
+    <div id="productModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h5 class="card-title" id="modalProductName"></h5>
+        <p class="card-text" id="modalProductDescription"></p>
+        <img id="modalProductImage" src="" alt="Product Image" class="product-image">
+      </div>
+    </div>
+    <div class="row">
+      {% for product in c2cUploadData %}
+      <div class="col-md-4">
+        <div class="card m-3">
+          <img src="{{ product.image.url }}" alt="Product Image" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title"><strong>Product Name:</strong>{{ product.productName }}</h5>
+            <p class="card-text"><strong>Product Description:</strong>{{ product.productDescription }}</p>
+            <p class="uploaded-by"><strong>Uploaded by:</strong> {{ product.username }}</p>
+            <p class="card-status">
+              {% if product.status == 'not_used' %}
+              <strong>Status:</strong> Not Used
+              {% else %}
+              {{ product.status }}
+              {% endif %}
+            </p>
+            {% if product.crcProductUploadId != user and product.show_friend_request %}
+            <form class="friend-request-form" method="POST">
+              {% csrf_token %}
+              <button class="custom-btn custom-btn-primary send-request-btn" data-receiver="{{ product.crcProductUploadId }}">Friend Request</button>
+            </form>
+            {% endif %}
+            <a href="/product-details/{{ product.productId }}/" class="custom-btn custom-btn-details">Details</a>
+            {% if product.chat_room_link %}
+            <a href="{{ product.chat_room_link }}" class="custom-btn custom-btn-chat-room">Join Chat Room</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="text-center">
+        <img src="{% static 'assets/img/no_data_found.jpg' %}" alt="No Products Found" height="500px" width="500px">
+        <p>No products found.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+<style>
+
+.card {
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    margin-top: 20px;
+  }
+
+  .card:hover {
+    transform: scale(1.05);
+  }
+
+  .card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+  .card-body {
+    padding: 20px;
+  }
+
+  .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .card-text {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .text-success {
+    color: green;
+  }
+
+  .text-danger {
+    color: red;
+  }
+
+  .uploaded-by {
+    font-size: 16px;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .card-status {
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  /* Button Styles */
+  .custom-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .custom-btn-primary {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  .custom-btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  .custom-btn-primary:active {
+    transform: scale(0.95);
+  }
+
+  .custom-btn-details {
+    background-color: #5cb85c;
+    color: #fff;
+    margin-right: 10px;
+  }
+
+  .custom-btn-chat-room {
+    background-color: #f0ad4e;
+    color: #fff;
+  }
+  
+
+    
+  
+   
+    
+    .btn-primary {
+      background-color: #007bff;
+      color: #fff;
+      transition: background-color 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+    
+    .btn-primary:active {
+      transform: scale(0.95);
+    }
+    </style>
+    
+
+{% endblock %}

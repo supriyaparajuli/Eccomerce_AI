@@ -1,0 +1,146 @@
+<!-- receive_friend_request.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  {% load static %}
+
+  {% for request in received_requests %}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Friend Request</h5>
+        <p class="card-text">From: {{ request.sender.username }}</p>
+        <p class="card-text">Status: <span class="status">{{ request.status }}</span></p>
+        <p>{{ request.id }}</p>
+        
+        {% if request.status == 'accepted' %}
+          <button class="btn btn-success join-btn" data-request-id="{{ request.id }}">Join Chat Room</button>
+        {% else %}
+          <button class="btn btn-success accept-btn" data-request-id="{{ request.id }}">Accept</button>
+          <button class="btn btn-danger reject-btn" data-request-id="{{ request.id }}">Reject</button>
+        {% endif %}
+        
+        <div id="error-alert" class="alert alert-danger d-none"></div>
+      </div>
+    </div>
+
+    {% empty %}
+    <div class="text-center">
+        <img src="{% static 'assets/img/no_data_found.jpg' %}" alt="No Products Found" height="500px" width="500px">
+        <p>Friend Request Empty .</p>
+    </div>
+  {% endfor %}
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('.reject-btn').click(function(e) {
+        e.preventDefault();
+        var requestId = $(this).data('request-id');
+        var cardElement = $(this).closest('.card');
+        rejectFriendRequest(requestId, cardElement);
+      });
+
+      function rejectFriendRequest(requestId, cardElement) {
+        $.ajax({
+          type: 'POST',
+          url: '/reject_friend_request/' + requestId + '/',
+          data: {
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+          },
+          success: function(response) {
+            if (response && response.success) {
+              updateUIAfterReject(cardElement);
+            } else {
+              alert('Failed to reject friend request.');
+            }
+          },
+          error: function() {
+            alert('An error occurred.');
+          }
+        });
+      }
+
+      function updateUIAfterReject(cardElement) {
+        cardElement.fadeOut('fast', function() {
+          $(this).remove();
+        });
+      }
+
+      $('.accept-btn').click(function(e) {
+        e.preventDefault();
+        var requestId = $(this).data('request-id');
+        var cardElement = $(this).closest('.card');
+        acceptFriendRequest(requestId, cardElement);
+      });
+
+      function acceptFriendRequest(requestId, cardElement) {
+        $.ajax({
+          type: 'POST',
+          url: '/accept_friend_request/' + requestId + '/',
+          data: {
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+          },
+          success: function(response) {
+            if (response && response.success) {
+              if (response.redirect_url) {
+                var chatRoomUrl = response.redirect_url;
+                var joinBtn = $('<button class="btn btn-success join-btn">Join Chat Room</button>');
+                joinBtn.click(function() {
+                  window.location.href = chatRoomUrl; // Redirect to the chat room page
+                });
+                cardElement.find('.accept-btn').replaceWith(joinBtn);
+                cardElement.find('.reject-btn').remove();
+                cardElement.find('.status').text('Accepted');
+                saveToLocalStorage(requestId, chatRoomUrl); // Save chat room URL to local storage
+              } else {
+                updateUIAfterAccept(cardElement);
+              }
+            } else {
+              alert('Failed to accept friend request.');
+            }
+          },
+          error: function() {
+            alert('An error occurred.');
+          }
+        });
+      }
+
+      function updateUIAfterAccept(cardElement) {
+        var acceptBtn = cardElement.find('.accept-btn');
+        var rejectBtn = cardElement.find('.reject-btn');
+
+        acceptBtn.text('Accepted');
+        acceptBtn.attr('disabled', true);
+        rejectBtn.remove();
+        cardElement.find('.status').text('Accepted');
+      }
+
+      // Retrieve accepted friend request information from local storage on page load
+      $('.join-btn').each(function() {
+        var requestId = $(this).data('request-id');
+        var chatRoomUrl = getFromLocalStorage(requestId);
+        if (chatRoomUrl) {
+          var joinBtn = $('<button class="btn btn-success join-btn">Join Chat Room</button>');
+          joinBtn.click(function() {
+            window.location.href = chatRoomUrl; // Redirect to the chat room page
+          });
+          $(this).replaceWith(joinBtn);
+        }
+      });
+
+      // Save chat room URL to local storage
+      function saveToLocalStorage(requestId, chatRoomUrl) {
+        var storageKey = 'friend_request_' + requestId;
+        localStorage.setItem(storageKey, chatRoomUrl);
+      }
+
+      // Retrieve chat room URL from local storage
+      function getFromLocalStorage(requestId) {
+        var storageKey = 'friend_request_' + requestId;
+        return localStorage.getItem(storageKey);
+      }
+    });
+  </script>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+<!-- verify-otp.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <h2>OTP Verification</h2>
+  
+  <form method="post">
+    {% csrf_token %}
+    
+    {% if messages %}
+      {% for message in messages %}
+        <div class="{% if message.tags %}alert alert-{{ message.tags }}{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    
+    <div class="form-group">
+      <label for="otp">Enter OTP:</label>
+      <input type="text" id="otp" name="otp" class="form-control" required>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Verify OTP</button>
+  </form>
+{% endblock %}

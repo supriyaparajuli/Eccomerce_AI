@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% block script %}
+
+<script type="text/javascript" src="{% static 'product-filter.js' %}"></script>
+<script type="text/javascript" src="{% static 'custom.js' %}"></script>
+<style>
+       input[type=range]{
+   -webkit-appearance: none;
+   width:100%;
+   }
+   input[type=range]::-webkit-slider-runnable-track {
+   width: 1000px;
+   height: 5px;
+   background: #FCBE00;
+   border: none;
+   border-radius: 3px;
+   }
+   input[type=range]::-webkit-slider-thumb {
+   -webkit-appearance: none;
+   border: none;
+   height: 16px;
+   width: 16px;
+   border-radius: 50%;
+   background: goldenrod;
+   margin-top: -5px;
+   }
+   input[type=range]:focus {
+   outline: none;
+   }
+   input[type=range]:focus::-webkit-slider-runnable-track {
+   background: #FCBE00;
+   }
+
+
+
+
+
+</style>
+
+{% endblock %}
+
+<main>
+    <!-- breadcrumb__area-start -->
+        <div class="page-banner-area page-banner-height-2"
+         data-background="{% static 'assets/img/banner/page-banner-4.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="page-banner-content text-center">
+                        <h4 class="breadcrumb-title">Recommendation With Machine Learning</h4>
+                        <div class="breadcrumb-two">
+                            <nav>
+                                <nav class="breadcrumb-trail breadcrumbs">
+                                    <ul class="breadcrumb-menu">
+                                        <li class="breadcrumb-trail">
+                                            <a href="{% url 'home' %}"><span>Home</span></a>
+                                        </li>
+                                        <li class="trail-item">
+                                            <span>Recommendations</span>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- breadcrumb__area-end -->
+
+
+    <section class="trending-product-area light-bg-s pt-25 pb-15">
+        <div class="container custom-conatiner">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="section__head d-flex justify-content-between mb-30">
+                        <div class="section__title section__title-2">
+                            <h5 class="display-4 mb-4">Recommended Items</h5>
+                        </div>
+                        <div class="button-wrap button-wrap-2">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if recommended %}
+            <div class="row">
+
+                {% for item in recommended %}
+
+                <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-2">
+                    <div class="product__item product__item-2 b-radius-2 mb-20" style="height: 430px;">
+                        <div class="product__thumb fix">
+                            <div class="product-image w-img">
+
+                                    <img src="{{item.featured_image}}" alt="product" width="100" height="250">
+
+                            </div>
+                            <div class="product-action product-action-2">
+
+
+                            </div>
+                        </div>
+                        <div class="product__content product__content-2">
+                            <h6>{{item.product_name}}</h6>
+
+
+                            <div class="price">
+                                <span>Rs. {{item.price}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="row">
+                <h5 class="my-4 text-center">No Recommended Product Found, Please Give High Rating Of Some
+                    Product. </u></h5>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+
+</main>
+{% endblock %}

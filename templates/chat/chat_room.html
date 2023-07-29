@@ -1,0 +1,74 @@
+{% block content %}
+
+<style>
+  .message {
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+
+  .sender {
+    text-align: right;
+    background-color: lightblue;
+  }
+
+  .receiver {
+    text-align: left;
+    background-color: lightgray;
+  }
+</style>
+
+<h1>Chat Room</h1>
+
+<div id="messages">
+  {% for message in messages.all %}
+    <div class="message {% if message.sender == request.user %}sender{% else %}receiver{% endif %}">
+      <p>{% if message.sender == request.user %}You{% else %}{{ message.sender.username }}{% endif %}</p>
+      <p>: {{ message.content }}</p>
+      <p>{{ message.timestamp }}</p>
+    </div>
+  {% endfor %}
+</div>
+
+<form id="message-form" method="post" action="{% url 'send_message' id=chat_room.id %}">
+  {% csrf_token %}
+  <input type="text" name="content" id="message-input" placeholder="Type your message" required>
+  <button type="submit">Send</button>
+</form>
+
+<script>
+
+  const currentUser = "{{ request.user.username }}";
+  const chatRoomID = "{{ chat_room.id }}";
+  // WebSocket connection
+  const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/{{ chat_room.id }}/");
+
+  // Event handler for receiving messages
+  chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    const messagesDiv = document.getElementById('messages');
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message');
+    messageElement.classList.add(data.sender === currentUser ? 'sender' : 'receiver');
+    const sender = (data.sender === currentUser) ? "You" : data.sender;
+    messageElement.innerHTML = `<p>${sender}: ${data.message}</p><p>${data.timestamp}</p>`;
+    messagesDiv.appendChild(messageElement);
+    
+    // Scroll to the bottom of the chat window
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  };
+
+  // Event handler for submitting a message
+  document.querySelector('#message-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const messageInput = document.getElementById('message-input');
+    const messageContent = messageInput.value;
+    const message = {
+      'message': messageContent
+    };
+    chatSocket.send(JSON.stringify(message));
+    messageInput.value = '';
+    return false; // Prevent the form from submitting and refreshing the page
+  });
+</script>
+
+{% endblock %}

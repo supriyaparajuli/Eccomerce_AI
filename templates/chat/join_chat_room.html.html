@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Join Chat Room</h1>
+<p>You have joined the chat room.</p>
+<p>Click <a href="{% url 'chat_room' id=chat_room.id %}">here</a> to enter the chat room.</p>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Chat Room</h1>
+  <h2>Participants: {{ chat_room.participant1.username }} and {{ chat_room.participant2.username }}</h2>
+
+  <div id="chat-messages">
+    {% for message in messages %}
+      <p>{{ message.sender.username }}: {{ message.content }}</p>
+    {% endfor %}
+  </div>
+
+  <form id="message-form" method="post">
+    {% csrf_token %}
+    <input type="text" name="message" required>
+    <button type="submit">Send</button>
+  </form>
+
+  <script>
+    // Use JavaScript to submit the form asynchronously and update the chat messages dynamically
+    const messageForm = document.getElementById('message-form');
+    const chatMessages = document.getElementById('chat-messages');
+
+    messageForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(messageForm);
+      const xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            // Clear the input field after sending the message
+            messageForm.reset();
+          } else {
+            console.error('Failed to send message.');
+          }
+        }
+      };
+
+      xhr.open('POST', messageForm.action);
+      xhr.send(formData);
+    });
+
+    // Use JavaScript to periodically fetch new messages and update the chat view
+    setInterval(() => {
+      const xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            chatMessages.innerHTML = xhr.responseText;
+          } else {
+            console.error('Failed to fetch messages.');
+          }
+        }
+      };
+
+      xhr.open('GET', window.location.href);
+      xhr.send();
+    }, 5000);
+  </script>
+{% endblock %}
