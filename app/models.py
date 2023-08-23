@@ -15,7 +15,6 @@ DISCOUNT_DEAL = (
 )
 
 class CustomUser(AbstractUser):
-    is_delivery = models.BooleanField('Is Delivery', default=False)
     phone_number = PhoneNumberField(null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
 

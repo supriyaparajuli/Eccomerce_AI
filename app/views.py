@@ -100,9 +100,7 @@ def BASE(request):
 
 
 def HOME(request):
-    if request.user.is_authenticated:
-        if request.user.is_delivery:
-            return redirect("delivery")
+    
 
     sliders = Slider.objects.all().order_by("-id")[0:3]
     banners = Banner.objects.all().order_by("-id")[0:3]
@@ -397,7 +395,6 @@ def REGISTER(request):
             "password": password,
             "firstname": firstname,
             "lastname": lastname,
-            "is_delivery": delivery,
             "phone_number": phone,
             "date_of_birth": dob,
             "otp": otp,
@@ -421,7 +418,6 @@ def verify_otp(request):
                     email=user_data["email"],
                     first_name=user_data["firstname"],
                     last_name=user_data["lastname"],
-                    is_delivery=user_data["is_delivery"],
                     phone_number=user_data["phone_number"],
                     date_of_birth=user_data["date_of_birth"],
                 )
@@ -451,10 +447,7 @@ def LOGIN(request):
         if user is not None:
             login(request, user)
 
-            if user.is_delivery:
-                return redirect("delivery")
-            else:
-                return redirect("home")
+            return redirect("home")
 
         else:
             messages.error(request, "Email and Password are Invalid !")
