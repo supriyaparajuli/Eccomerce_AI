@@ -51,9 +51,6 @@ urlpatterns = [
     path('refunds/', views.refunds, name="refunds"),
     path('category/<int:category_id>/', views.categorization, name="category"),
     path('search_blog/', views.search_blog, name="search_blog"),
-    path('delivery/', views.delivery, name="delivery"),
-    path('delivery_update/<str:id>', views.delivery_update, name="delivery-update"),
-    path('delivery_report/',views.delivery_report, name="delivery-report"),
     path('verify-otp/', views.verify_otp, name='verify_otp'),
 
 

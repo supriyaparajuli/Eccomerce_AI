@@ -440,11 +440,3 @@ class Message(models.Model):
     chat_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE,null=True)
 
 
-
-class DeliveryReport(models.Model):
-    reference_code = models.CharField(max_length=100, null=True, blank=True)
-    username = models.CharField(max_length=50, null=True,blank=True)
-    report = models.TextField(max_length=100, null=True, blank=True) 
-
-    def __str__(self):
-        return self.username

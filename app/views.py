@@ -43,7 +43,6 @@ from .models import (
     Message,
     ChatRoom,
     CustomUser,
-    DeliveryReport,
 )
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -59,7 +58,6 @@ from .forms import (
     C2CUploadProductForm,
     ChatMessageForm,
     OrderForm,
-    DeliveryReportForm,
 )
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.template.loader import render_to_string
@@ -1433,84 +1431,6 @@ def chatPage(request, *args, **kwargs):
     return render(request, "chat/chatPage.html", context)
 
 
-# making function for send the chat
-# @login_required
-# def chat(request, room_id):
-#     try:
-#         chat_room = ChatRoom.objects.get(id=room_id)
-#         print("chat_room",chat_room)
-
-#         # Check if the logged-in user is a participant in the chat room
-#         if request.user == chat_room.participant1 or request.user == chat_room.participant2:
-#             # Get the messages between the participants
-#             messages = Message.objects.filter(
-#                 Q(sender=chat_room.participant1, receiver=chat_room.participant2) |
-#                 Q(sender=chat_room.participant2, receiver=chat_room.participant1)
-#             ).order_by('timestamp')
-
-#             return render(request, 'c2c/chat.html', {'chat_room': chat_room, 'messages': messages})
-#         else:
-#             # User is not authorized to access the chat room
-#             return HttpResponseForbidden('You are not authorized to access this chat room.')
-#     except ChatRoom.DoesNotExist:
-#         return HttpResponseNotFound('Chat room does not exist.')
-
-
-@login_required
-def delivery(request):
-    if request.user.is_delivery == False:
-        return redirect("home")
-
-    users = CustomUser.objects.filter(
-        is_delivery=False, is_superuser=False
-    ).prefetch_related("address_set")
-    orders = Order.objects.all().order_by("id")
-    form = OrderForm()
-    form_report = DeliveryReportForm()
-    context = {
-        "users": users,
-        "orders": orders,
-        "form": form,
-        "form_report": form_report,
-    }
-    return render(request, "delivery/delivery.html", context)
-
-
-def delivery_update(request, id):
-    if request.method == "POST":
-        order = Order.objects.get(pk=id)
-        form = OrderForm(request.POST, instance=order)
-        if form.is_valid():
-            form.save()
-            if order.status == "On The Way":
-                account_sid = "ACca6b2dd2f80dfc614461015f442fd2d8"
-                auth_token = "1511ce8a295a19f5caf1a66bf9a6976c"
-                client = Client(account_sid, auth_token)
-
-                message = client.messages.create(
-                    body="Hi there, your order is almost on the way to the destination, Get Ready",
-                    from_="+15419334578",
-                    to="+9779861388667",
-                )
-
-                print("message sms sent successfully")
-                print(message.sid)
-
-            return redirect("delivery")
-    return render(request, "delivery/delivery.html")
-
-
-def delivery_report(request):
-    if request.method == "POST":
-        form = DeliveryReportForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("delivery")
-
-    return render(request, "delivery/delivery.html")
-
-
-
 class KhaltiRequestView(View):
     def post(self, request):
         amount = int(request.POST.get("total_amount"))
@@ -1577,7 +1497,7 @@ class KhaltiVerifyView(View):
             "Client Verified": True
         }
         account_sid = "ACca6b2dd2f80dfc614461015f442fd2d8"
-        auth_token = "1511ce8a295a19f5caf1a66bf9a6976c"
+        auth_token = "18d630fd41e6d8ddbdf3cfaea4a7a1db"
         client = Client(account_sid, auth_token)
 
         message = client.messages.create(

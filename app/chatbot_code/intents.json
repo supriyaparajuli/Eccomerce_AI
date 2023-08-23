@@ -5,31 +5,104 @@
       "patterns": [
         "Hi",
         "Hey",
-        "How are you",
         "Is anyone there?",
         "Hello",
-        "Good day"
+        "Hola",
+        "Hello there",
+        "Hya",
+        "Namaste",
+        "yo"
       ],
       "responses": [
-        "Hey :-)",
-        "Hello, thanks for visiting",
-        "Hi there, what can I do for you?",
-        "Hi there, how can I help?"
+        "Hello! How can I assist you?",
+        "Hi! How can I help you today?",
+        "HI! Good to see you."
       ]
     },
     {
       "tag": "goodbye",
-      "patterns": ["Bye", "See you later", "Goodbye"],
+      "patterns": [
+        "Bye",
+        "See you later",
+        "Goodbye",
+        "Get lost",
+        "Till next time",
+        "bbye",
+        "Adios"
+      ],
       "responses": [
-        "See you later, thanks for visiting",
-        "Have a nice day",
-        "Bye! Come back again soon."
+        "Goodbye! Have a great day!",
+        "Bye! Take care!",
+        "See you later!",
+        "Take care and have a wonderful day!"
       ]
     },
     {
       "tag": "thanks",
-      "patterns": ["Thanks", "Thank you", "That's helpful", "Thank's a lot!"],
-      "responses": ["Happy to help!", "Any time!", "My pleasure"]
+      "patterns": [
+        "Thank you",
+        "Thanks",
+        "Appreciate it",
+        "Thanks a lot",
+        "Many thanks",
+        "That's helpful", 
+        "Thank's a lot!"
+      ],
+      "responses": [
+        "Happy to help!",
+        "You're welcome!",
+        "You're welcome! Glad I could assist you.",
+        "No problem! Let me know if there's anything else I can help with."
+      ]
+    },
+    {
+    "tag": "name",
+      "patterns": [
+        "What's your name?",
+        "Who are you?",
+        "May I know your name?",
+        "What should I call you?"
+      ],
+      "responses": [
+        "You can call me ChatBot.",
+        "I'm ChatBot.",
+        "My name is ChatBot."
+      ]
+    },
+    {
+    "tag": "help",
+    "patterns": [
+      "Help",
+      "I need help",
+      "Can you help me?",
+      "What can you do?"
+    ],
+    "responses": [
+      "Sure! I'm here to help. What do you need assistance with?",
+      "Of course! I'll do my best to help you. How can I assist you?",
+      "I'm here to assist you. Let me know how I can help."
+    ]
+    },
+    {
+      "tag": "funny",
+      "patterns": [
+        "Tell me a joke!",
+        "Tell me something funny!",
+        "Do you know a joke?"
+      ],
+      "responses": [
+        "A perfectionist walked into a bar...apparently, the bar wasn't set high enough",
+        "I ate a clock yesterday, it was very time-consuming",
+        "Never criticize someone until you've walked a mile in their shoes. That way, when you criticize them, they won't be able to hear you from that far away. Plus, you'll have their shoes.",
+        "The world tongue-twister champion just got arrested. I hear they're gonna give him a really tough sentence.",
+        "I own the world's worst thesaurus. Not only is it awful, it's awful.",
+        "What did the traffic light say to the car? \"Don't look now, I'm changing.\"",
+        "What do you call a snowman with a suntan? A puddle.",
+        "How does a penguin build a house? Igloos it together",
+        "I went to see the doctor about my short-term memory problems – the first thing he did was make me pay in advance",
+        "As I get older and I remember all the people I’ve lost along the way, I think to myself, maybe a career as a tour guide wasn’t for me.",
+        "o what if I don't know what 'Armageddon' means? It's not the end of the world."
+      ]
     },
     {
       "tag": "items",
@@ -42,8 +115,9 @@
         "Can you tell me about your product selection?"
       ],
       "responses": [
-      "We offer a wide range of products including electronics, clothing, accessories, and more.",
-      "Our product selection includes electronics, clothing, accessories, and more."
+        "We offer a wide range of products including electronics, clothing, accessories, and more.",
+        "Our product selection includes electronics, clothing, accessories, and more.Feel free to browse through our website to explore the complete range.",
+        "We sell a diverse selection of products, including clothing, electronics, furniture, kitchen appliances, sports equipment, and much more."
       ]
     },
     {
@@ -58,10 +132,9 @@
         "Do you support PayPal?"
       ],
       "responses": [
-        "We accept VISA, Mastercard and Paypal",
-        "We accept most major credit cards, and Paypal",
-        "We accept various payment methods, including credit cards (Visa, Mastercard, American Express) and PayPal.",
-        "You can pay using major credit cards (Visa, Mastercard, American Express) or PayPal."
+        "We accept VISA, Mastercard and American Express.",
+        "We accept various payment methods, including credit cards (Visa, Mastercard, American Express).",
+        "You can pay using major credit cards (Visa, Mastercard, American Express)."
       ]
     },
     {
@@ -74,22 +147,128 @@
         "When will I receive my order?"
       ],
       "responses": [
-        "Delivery could vary based on your locations. So please track your delivery from ordertracking page",
-        "You can view it from order tracking page",
-        "Your selected products can be shown through order tracking"
+        "Delivery could vary based on your locations. So please track your delivery from ordertracking page.",
+        "You can view it from order tracking page.",
+        "Your selected products can be shown through order tracking page."
+      ],
+      "has_link": true,
+      "link_title": "Order Tracking",
+      "link_url": "http://127.0.0.1:8000/orders/"
+    },
+    
+    {
+      "tag": "refunds",
+      "patterns": [
+        "How can I return a product?",
+        "What is your refund policy?",
+        "I want to refund my order?",
+        "I need refunds?",
+        "How to get refund?"
+      ],
+      "responses": [
+        "You can use refund form in Refund Form page to apply refunds. The refrence code you see can be taken from your orders page."
+      ],
+      "has_link": true,
+      "link_title": "Refund",
+      "link_url": "http://127.0.0.1:8000/refunds/"
+    },
+    {
+      "tag": "reccommendation",
+      "patterns": [
+        "Do you reccommend?",
+        "Reccommend me something?"
+      ],
+      "responses": [
+        "Sure, view our reccomended page to see reccomendations.",
+        "Please review some products and go to our reccommendation page to see reccomendations."
+      ],
+      "has_link": true,
+      "link_title": "Reccomendation",
+      "link_url": "http://127.0.0.1:8000/productRecommend/"
+    },
+    {
+      "tag": "coupons",
+      "patterns": [
+        "Do you provide promocode?",
+        "Give me coupon?",
+        "What is the promocode?",
+        "Give me promocode?",
+        "Give me discounts?"
+      ],
+      "responses": [
+        "Sure, you can type : kinam on the checkout page to get 20% off.",
+        "Please use kinam as a promocode on checkout to get 20% off."
+      ],
+      "has_link": true,
+      "link_title": "Checkout",
+      "link_url": "http://127.0.0.1:8000/place_order/"
+    },
+    {
+      "tag": "c2c",
+      "patterns": [
+        "Can i sell my items?",
+        "Do you support c2c?"
+      ],
+      "responses": [
+        "Sure, you can visit our C2C webpage to sell your items or view others listed products. Beaware that Kinam won't be responsible for C2C products.",
+        "Please visit C2C page to post/view or contact sellers."
+      ],
+      "has_link": true,
+      "link_title": "C2C here",
+      "link_url": "c2c_product_list/"
+    },
+    {
+      "tag": "contact",
+      "patterns": [
+        "Contact the developers?",
+        "How to contact you?",
+        "Tell me about the developers of kinam?",
+        "Who developed you?"
+      ],
+      "responses": [
+        "Kinam was developed by a group of NCIT members: Abhishek Thapa, Abhas Kumar Jha, Ankit Singh & Evan Pradhan. You can contact them through NCIT college."
       ]
     },
     {
-      "tag": "funny",
+      "tag": "C2C_sell",
       "patterns": [
-        "Tell me a joke!",
-        "Tell me something funny!",
-        "Do you know a joke?"
+        "How to post to sell my items?",
+        "How to sell my items?",
+        "What are the procedure to being a seller?",
+        "How to be be a seller?"
       ],
       "responses": [
-        "Why did the hipster burn his mouth? He drank the coffee before it was cool.",
-        "What did the buffalo say when his son left for college? Bison."
+        "You can fill the form provided on C2C post page. "
+      ],
+      "has_link": true,
+      "link_title": "C2C here",
+      "link_url": "http://127.0.0.1:8000/c2c_upload_product/"
+    }, {
+      "tag": "chat",
+      "patterns": [
+        "How to contact seller?",
+        "How much authentic is C2C prodcuts?",
+        "How to talk with the seller?"
+      ],
+      "responses": [
+        "Altough Kinam won't be responsible selling or buying for C2C products, we support chatting between the customer. Please send request to chat first to chat with the seller."
       ]
+    },
+    {
+      "tag": "wwe",
+      "patterns": [
+        "Tell me something about wwe",
+        "Tell me something about w2k",
+        "w2k",
+        "wwe2k",
+        "wwe"
+      ],
+      "responses": [
+        "WWE 2K22 is a 2022 professional wrestling sports video game developed by Visual Concepts and published by 2K."
+      ],
+      "has_link": true,
+      "link_title": "WWE2k22",
+      "link_url": "http://127.0.0.1:8000/product/WWE-2K22-PlayStation-4"
     }
   ]
 }

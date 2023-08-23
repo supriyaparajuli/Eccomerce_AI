@@ -86,7 +86,6 @@ admin.site.register(Signup)
 admin.site.register(Comment)
 admin.site.register(Rating)
 admin.site.register(PostView)
-admin.site.register(DeliveryReport, DeliveryReportAdmin)
 
 
 # for C2C App

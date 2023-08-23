@@ -7,7 +7,6 @@ from .models import (
     C2CUploadProductModel,
     ChatMessage,
     Order,
-    DeliveryReport,
 )
 
 
@@ -138,21 +137,5 @@ class OrderForm(forms.ModelForm):
         ]
 
 
-class DeliveryReportForm(forms.ModelForm):
-    class Meta:
-        model = DeliveryReport
-        fields = ["reference_code", "username", "report"]
-        widgets = {
-            "reference_code": forms.TextInput(
-                attrs={"class": "form-control", "id": "refid","required":"required"}
-            ),
-            "username": forms.TextInput(
-                attrs={"class": "form-control", "id": "reporteduserid","required":"required"}
-            ),
-            "report": forms.Textarea(
-                attrs={"class": "form-control", "id": "reportid","required":"required"}
-            ),
-        }
-        
 
 
