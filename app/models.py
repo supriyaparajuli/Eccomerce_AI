@@ -51,11 +51,11 @@ class Department(models.Model):
 
 
 class Category(models.Model):
-    main_category = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name + "-->" + self.main_category.name
+        return self.name + "-->" + self.department
 
 
 class SubCategory(models.Model):
@@ -63,7 +63,7 @@ class SubCategory(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.category.main_category.name + "---" + self.category.name + "---" + self.name
+        return self.category.department.name + "---" + self.category.name + "---" + self.name
 
 
 class Section(models.Model):
