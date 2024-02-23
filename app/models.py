@@ -43,7 +43,7 @@ class Banner(models.Model):
         return self.Quote
 
 
-class MainCategory(models.Model):
+class Department(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -51,7 +51,7 @@ class MainCategory(models.Model):
 
 
 class Category(models.Model):
-    main_category = models.ForeignKey(MainCategory, on_delete=models.CASCADE)
+    main_category = models.ForeignKey(Department, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
 
     def __str__(self):

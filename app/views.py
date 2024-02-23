@@ -21,7 +21,7 @@ from .models import (
     Banner,
     Category,
     SubCategory,
-    MainCategory,
+    Department,
     Product,
     Color,
     Brand,
@@ -104,7 +104,7 @@ def HOME(request):
 
     sliders = Slider.objects.all().order_by("-id")[0:3]
     banners = Banner.objects.all().order_by("-id")[0:3]
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
 
     product = Product.objects.filter(section__name="Top Deal of the Day")
 
@@ -114,7 +114,7 @@ def HOME(request):
     context = {
         "sliders": sliders,
         "banners": banners,
-        "maincategory": maincategory,
+        "Department": Department,
         "product": product,
         "reviews": reviews,
     }
@@ -122,7 +122,7 @@ def HOME(request):
 
 
 def PRODUCT_DETAILS(request, slug):
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
 
     product = Product.objects.filter(slug=slug)
     if product.exists():
@@ -135,7 +135,7 @@ def PRODUCT_DETAILS(request, slug):
     context = {
         "product": product,
         "reviews": reviews,
-        "maincategory": maincategory,
+        "Department": Department,
     }
 
     return render(request, "product/product_detail.html", context)
@@ -146,15 +146,15 @@ def Error404(request):
 
 
 def MY_ACCOUNT(request):
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
 
-    return render(request, "account/my-account.html", {"maincategory": maincategory})
+    return render(request, "account/my-account.html", {"Department": Department})
 
 
 # adding function for the product recommendation product
 # adding function for the product recommendation product
 def generateRecommendation(request):
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
 
     productsAll = Product.objects.all()
     productRating = ReviewRating.objects.filter(rating__gte=4.0)
@@ -345,7 +345,7 @@ def generateRecommendation(request):
                 print("helllooooo")
                 params = {}
                 params["recommended"] = recommender.to_dict("records")
-                params["maincategory"] = maincategory
+                params["Department"] = Department
 
                 return render(request, "product/product_recommendation.html", params)
             except Exception as e:
@@ -354,7 +354,7 @@ def generateRecommendation(request):
                 userInput = None
                 params = {}
                 params["recommended"] = None
-                params["maincategory"] = maincategory
+                params["Department"] = Department
                 return render(request, "product/product_recommendation.html", params)
 
     return render(request, "product/product_recommendation.html", params)
@@ -456,9 +456,9 @@ def LOGIN(request):
 
 @login_required(login_url="/accounts/login/")
 def PROFILE(request):
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
 
-    return render(request, "profile/profile.html", {"maincategory": maincategory})
+    return render(request, "profile/profile.html", {"Department": Department})
 
 
 @login_required(login_url="/accounts/login/")
@@ -486,9 +486,9 @@ def PROFILE_UPDATE(request):
 
 
 def CONTACT(request):
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
 
-    return render(request, "Main/contact.html", {"maincategory": maincategory})
+    return render(request, "Main/contact.html", {"Department": Department})
 
 
 def PRODUCT(request):
@@ -496,7 +496,7 @@ def PRODUCT(request):
     product = Product.objects.all()
     color = Color.objects.all()
     brand = Brand.objects.all
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
     min_price = Product.objects.all().aggregate(Min("price"))
     max_price = Product.objects.all().aggregate(Max("price"))
     ColorID = request.GET.get("colorID")
@@ -526,7 +526,7 @@ def PRODUCT(request):
         "brand": brand,
         "reviews": reviews,
         "total_data": total_data,
-        "maincategory": maincategory,
+        "Department": Department,
     }
 
     return render(request, "product/product.html", context)
@@ -578,7 +578,7 @@ def add_to_cart(request):
 
 @login_required
 def cart(request):
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
 
     # logic of cart
     user = request.user
@@ -600,7 +600,7 @@ def cart(request):
         "tax": tax,
         "shipping_amount": shipping_amount,
         "total_amount": int(amount + shipping_amount + tax),
-        "maincategory": maincategory,
+        "Department": Department,
     }
     return render(request, "cart/cart.html", context)
 
@@ -772,7 +772,7 @@ def submit_review(request, product_id):
 
 
 def search(request):
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
     category = Category.objects.all()
     product = Product.objects.all()
     color = Color.objects.all()
@@ -809,14 +809,14 @@ def search(request):
         "color": color,
         "brand": brand,
         "reviews": reviews,
-        "maincategory": maincategory,
+        "Department": Department,
     }
 
     return render(request, "product/search.html", context)
 
 
 def place_order(request):
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
     coupon = Coupon_Code.objects.all()
     coupon.discount = 0
     valid_coupon = None
@@ -864,20 +864,20 @@ def place_order(request):
         "valid_coupon": valid_coupon,
         "invalid_coupon": invalid_coupon,
         "addresses": addresses,
-        "maincategory": maincategory,
+        "Department": Department,
     }
     return render(request, "checkout/checkout.html", context)
 
 
 @login_required
 def profile(request):
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
     addresses = Address.objects.filter(user=request.user)
     orders = Order.objects.filter(user=request.user)
     return render(
         request,
         "profile/profile_detail.html",
-        {"addresses": addresses, "orders": orders, "maincategory": maincategory},
+        {"addresses": addresses, "orders": orders, "Department": Department},
     )
 
 
@@ -885,12 +885,12 @@ def profile(request):
 class AddressView(View):
     def get(self, request):
         form = AddressForm()
-        maincategory = MainCategory.objects.all().order_by("-id")
+        Department = Department.objects.all().order_by("-id")
 
         return render(
             request,
             "profile/add_address.html",
-            {"form": form, "maincategory": maincategory},
+            {"form": form, "Department": Department},
         )
 
     def post(self, request):
@@ -909,17 +909,17 @@ class AddressView(View):
 @login_required
 def orders(request):
     all_orders = Order.objects.filter(user=request.user).order_by("-ordered_date")
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
 
     return render(
         request,
         "checkout/orders.html",
-        {"orders": all_orders, "maincategory": maincategory},
+        {"orders": all_orders, "Department": Department},
     )
 
 
 def blog(request):
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
     blogcategories = BlogCategory.objects.all()
     category_count = get_category_count()
     print(category_count)
@@ -944,7 +944,7 @@ def blog(request):
     context = {
         "bloglist": paginated_queryset,
         "blogcategories": blogcategories,
-        "maincategory": maincategory,
+        "Department": Department,
         "page_request_var": page_request_var,
         "blogsidelist": blogsidelist,
         "category_count": category_count,
@@ -954,7 +954,7 @@ def blog(request):
 
 
 def blog_details(request, id):
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
     blogsidelist = Post.objects.all().order_by("-timestamp")[:4]
     post = get_object_or_404(Post, id=id)
     category_count = get_category_count()
@@ -971,7 +971,7 @@ def blog_details(request, id):
 
     context = {
         "post": post,
-        "maincategory": maincategory,
+        "Department": Department,
         "blogsidelist": blogsidelist,
         "category_count": category_count,
         "form": form,
@@ -989,17 +989,17 @@ def remove_address(request, id):
 
 
 def faq(request):
-    maincategory = MainCategory.objects.all().order_by("-id")
-    return render(request, "Main/faq.html", {"maincategory": maincategory})
+    Department = Department.objects.all().order_by("-id")
+    return render(request, "Main/faq.html", {"Department": Department})
 
 
 @method_decorator(login_required, name="dispatch")
 class RequestRefundView(View):
     def get(self, request):
-        maincategory = MainCategory.objects.all().order_by("-id")
+        Department = Department.objects.all().order_by("-id")
 
         form = RefundForm()
-        context = {"form": form, "maincategory": maincategory}
+        context = {"form": form, "Department": Department}
         return render(request, "refund/request_refund.html", context)
 
     def post(self, request):
@@ -1072,25 +1072,25 @@ def refunds(request):
         email.fail_silently = False
         email.send()
 
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
 
     context = {
         "orders": refunds,
-        "maincategory": maincategory,
+        "Department": Department,
     }
 
     return render(request, "refund/refunds.html", context)
 
 
 def categorization(request, category_id):
-    maincategory = MainCategory.objects.all().order_by("-id")
+    Department = Department.objects.all().order_by("-id")
 
-    items_of_maincategory = Product.objects.filter(
+    items_of_Department = Product.objects.filter(
         Categories__main_category__id=category_id
     )
     context = {
-        "items": items_of_maincategory,
-        "maincategory": maincategory,
+        "items": items_of_Department,
+        "Department": Department,
     }
 
     return render(request, "product/categorization.html", context)

@@ -64,7 +64,7 @@ class DeliveryReportAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(Slider)
 admin.site.register(Banner)
-admin.site.register(MainCategory)
+admin.site.register(Department)
 admin.site.register(Category)
 admin.site.register(SubCategory)
 admin.site.register(Section)
