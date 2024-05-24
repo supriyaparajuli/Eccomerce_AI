@@ -1,0 +1,7 @@
+1) pipenv install
+2) pipenv shell (cmd shell not terminal)
+3) pipenv install django
+4) create django project and startapp
+5) now use pipenv install to install your preferred libraries
+6) setup settings.py (token auth, user model, swagger)
+7) setup .env file ( secret key, allowed hosts, debug = true)
