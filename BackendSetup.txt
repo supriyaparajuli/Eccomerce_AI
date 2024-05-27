@@ -1,7 +1,12 @@
 1) pipenv install
 2) pipenv shell (cmd shell not terminal)
 3) pipenv install django
-4) create django project and startapp
+4) create django project and startapp your preferred apps
 5) now use pipenv install to install your preferred libraries
 6) setup settings.py (token auth, user model, swagger)
 7) setup .env file ( secret key, allowed hosts, debug = true)
+8) setup docker files (copy same logic as GI or cattle, but rename the fields) also put gitignore
+9) Now docker compose build and then docker compose up and docker compose --nocache, takes upto max 30 mins with decent network connection
+10) Setup User model, don't migrate yet
+11) Now setup postgres database - already setted up, change port number - and be consistent with username and password in .env file
+12) Docker compose exec web python manage.py makemigrations, and migrate
