@@ -4,7 +4,7 @@
 4) create django project and startapp your preferred apps
 5) now use pipenv install to install your preferred libraries
 6) setup settings.py (token auth, user model, swagger, restframework, debug, secret key, allowed hosts,etc )
-7) setup .env file ( secret key, allowed hosts, debug = true)
+7) setup .env file ( secret key, allowed hosts, debug = true, postgres, celery,email)
 8) setup docker files (copy same logic as GI or cattle, but rename the fields) also put gitignore
 9) Now docker compose build and then docker compose up and docker compose --nocache, takes upto max 30 mins with decent network connection
 10) Setup User model, don't migrate yet
