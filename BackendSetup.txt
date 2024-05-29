@@ -6,7 +6,7 @@
 6) setup settings.py (token auth, user model, swagger, restframework, debug, secret key, allowed hosts,etc )
 7) setup .env file ( secret key, allowed hosts, debug = true, postgres, celery,email)
 8) setup docker files (copy same logic as GI or cattle, but rename the fields) also put gitignore
-9) Now docker compose build and then docker compose up and docker compose build --no-cache, takes upto max 30 mins with decent network connection
+9) Now, docker compose down of all the other projects. Then docker compose build and then docker compose up and docker compose build --no-cache, takes upto max 30 mins with decent network connection
 10) Setup User model, don't migrate yet
 11) Now setup postgres database - already setted up, change port number - and be consistent with username and password in .env file
 12) Docker compose exec web python manage.py makemigrations, and migrate
